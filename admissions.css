@@ -318,4 +318,12 @@
     .inquiry-wrapper {
         flex-direction: column;
     }
+
+    .inquiry-form-container {
+        padding: 25px;
+    }
+
+    .section-title {
+        font-size: 28px;
+    }
 }

@@ -433,10 +433,48 @@ body {
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        flex-direction: column;
+        gap: 0;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        z-index: 999;
+        padding: 10px 0;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links a {
+        padding: 14px 25px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 16px;
+        width: 100%;
+    }
+
+    .nav-links .dropdown {
+        width: 100%;
+    }
+
+    .nav-wrapper {
+        position: relative;
+        flex-wrap: wrap;
     }
 
     .mobile-menu-btn {
         display: flex;
+    }
+
+    .enroll-btn {
+        display: none;
+    }
+
+    .logo-img {
+        height: 70px;
     }
 
     .hero-title {
@@ -463,6 +501,7 @@ body {
 
     .hero-section {
         padding: 60px 20px;
+        min-height: auto;
     }
 }
 

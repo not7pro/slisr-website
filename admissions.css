@@ -1,0 +1,321 @@
+/* Admissions Specific Styles */
+
+.admissions-hero {
+    min-height: 400px;
+    padding: 60px 20px;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #1e293b;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+/* Admission Process */
+.process-section {
+    padding: 80px 20px;
+    background-color: #ffffff;
+}
+
+.process-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.process-timeline::before {
+    content: '';
+    position: absolute;
+    left: 30px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: #e2e8f0;
+}
+
+.process-step {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.process-step.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.step-number {
+    background: #2563eb;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    flex-shrink: 0;
+    z-index: 1;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+}
+
+.step-content {
+    background: #f8fafc;
+    padding: 25px;
+    border-radius: 12px;
+    flex-grow: 1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.step-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.step-content h3 {
+    margin-bottom: 10px;
+    color: #1e293b;
+    font-size: 20px;
+}
+
+/* Tuition and Fees */
+.fees-section {
+    padding: 80px 20px;
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+.fees-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.fee-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 30px;
+    text-align: center;
+    position: relative;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.6s ease;
+}
+
+.fee-card.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.fee-card h3 {
+    font-size: 22px;
+    color: #475569;
+    margin-bottom: 20px;
+}
+
+.fee-amount {
+    font-size: 40px;
+    font-weight: 700;
+    color: #2563eb;
+    margin-bottom: 25px;
+}
+
+.fee-amount span {
+    font-size: 16px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.fee-details {
+    list-style: none;
+    text-align: left;
+}
+
+.fee-details li {
+    margin-bottom: 15px;
+    color: #475569;
+    padding-left: 25px;
+    position: relative;
+}
+
+.fee-details li::before {
+    content: '✓';
+    color: #10b981;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.fee-card.featured {
+    border: 2px solid #2563eb;
+    transform: scale(1.05);
+}
+
+.fee-card.featured.visible {
+    transform: scale(1.05); /* retain slightly larger scale */
+}
+
+.fee-card.featured:hover {
+    transform: scale(1.08); /* slight enlargement on hover */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.badge {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2563eb;
+    color: white;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* Inquiry Section */
+.inquiry-section {
+    padding: 80px 20px;
+    background: #f8fafc;
+}
+
+.inquiry-wrapper {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.inquiry-text {
+    flex: 1;
+    opacity: 0;
+    transform: translateX(-30px);
+    transition: all 0.6s ease;
+}
+
+.inquiry-text.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.inquiry-text h2 {
+    font-size: 32px;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.inquiry-text p {
+    font-size: 18px;
+    color: #475569;
+}
+
+.inquiry-form-container {
+    flex: 1;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.6s ease;
+}
+
+.inquiry-form-container.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #1e293b;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.success-message {
+    margin-top: 20px;
+    padding: 15px;
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .process-timeline::before {
+        left: 20px;
+    }
+    
+    .step-number {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+    
+    .fees-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .fee-card.featured {
+        transform: scale(1);
+    }
+    
+    .fee-card.featured.visible {
+        transform: scale(1);
+    }
+    
+    .inquiry-wrapper {
+        flex-direction: column;
+    }
+}

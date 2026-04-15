@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Life - Sri Lankan International School Riyadh</title>
+    <meta name="description" content="Explore Life Beyond the Classroom at Sri Lankan International School Riyadh. Discover our vibrant clubs, state-of-the-art facilities, and student voices.">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="campus-life.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <img src="school-logo.png" alt="Sri Lankan International School Riyadh Logo" class="logo-img">
+                </div>
+
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="about.html" class="dropbtn">About ▼</a>
+                    </div>
+                    <a href="academics.html">Academics</a>
+                    <a href="admissions.html">Admissions</a>
+                    <a href="campus-life.html" class="active">Campus Life</a>
+                    <a href="#">News & Events</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+
+                <button class="enroll-btn">Enroll Now</button>
+
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section campus-hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1 class="hero-title">Life Beyond the <br><span class="highlight-text">Classroom</span></h1>
+                <p class="hero-description">Discover a vibrant, inclusive community where students explore their passions, build lifelong friendships, and grow into well-rounded global citizens.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Extracurriculars Section -->
+    <section class="content-section overlay-section clubs-section">
+        <div class="container">
+            <h2 class="section-title">Extracurriculars & Clubs</h2>
+            <p class="section-subtitle">Something for everyone to discover and cultivate their unique talents.</p>
+            
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="stem">STEM</button>
+                <button class="filter-btn" data-filter="leadership">Leadership</button>
+                <button class="filter-btn" data-filter="sports">Sports</button>
+                <button class="filter-btn" data-filter="arts">Arts</button>
+            </div>
+
+            <div class="clubs-grid" id="clubsGrid">
+                <div class="club-card" data-category="stem" data-aos="fade-up">
+                    <div class="club-icon">🤖</div>
+                    <h3>Robotics & Coding</h3>
+                    <p>Building the future with hands-on engineering, coding challenges, and innovation competitions.</p>
+                </div>
+                <div class="club-card" data-category="leadership" data-aos="fade-up" data-aos-delay="100">
+                    <div class="club-icon">🌍</div>
+                    <h3>Model UN (MUN)</h3>
+                    <p>Developing diplomacy, negotiation, and public speaking skills by addressing global issues.</p>
+                </div>
+                <div class="club-card" data-category="sports" data-aos="fade-up" data-aos-delay="200">
+                    <div class="club-icon">🏆</div>
+                    <h3>Athletics & Sports</h3>
+                    <p>Fostering teamwork and physical wellness through basketball, football, swimming, and more.</p>
+                </div>
+                <div class="club-card" data-category="arts" data-aos="fade-up" data-aos-delay="300">
+                    <div class="club-icon">🎭</div>
+                    <h3>Performing Arts</h3>
+                    <p>Expressing creativity through drama, choir, music productions, and cultural showcases.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities Section -->
+    <section class="content-section facilities-section bg-light">
+        <div class="container">
+            <h2 class="section-title">State-of-the-Art Facilities</h2>
+            <p class="section-subtitle">An environment built to inspire, innovate, and support world-class education.</p>
+            
+            <div class="facilities-grid">
+                <div class="facility-card" data-aos="zoom-in">
+                    <div class="facility-image bg-blue">
+                        <span>🧪</span>
+                    </div>
+                    <div class="facility-info">
+                        <h3>Advanced Science Labs</h3>
+                        <p>Fully equipped laboratories matching modern university standards for practical learning.</p>
+                    </div>
+                </div>
+                <div class="facility-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="facility-image bg-green">
+                        <span>⚽</span>
+                    </div>
+                    <div class="facility-info">
+                        <h3>Sports Complex</h3>
+                        <p>Indoor gymnasiums, expansive outdoor courts, and swimming pools for physical education.</p>
+                    </div>
+                </div>
+                <div class="facility-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="facility-image bg-purple">
+                        <span>📚</span>
+                    </div>
+                    <div class="facility-info">
+                        <h3>Extensive Library</h3>
+                        <p>Thousands of physical books, digital archives, and quiet study pods for deep research.</p>
+                    </div>
+                </div>
+                <div class="facility-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="facility-image bg-orange">
+                        <span>🎨</span>
+                    </div>
+                    <div class="facility-info">
+                        <h3>Creative Studios</h3>
+                        <p>Dedicated spaces for visual arts, music practice, and media production.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Student Voices Section -->
+    <section class="content-section voices-section">
+        <div class="container text-center">
+            <h2 class="section-title text-white">Student Voices</h2>
+            <div class="carousel-container" data-aos="fade-up" id="studentCarousel">
+                <div class="testimonials-slider">
+                    <div class="testimonial-slide active">
+                        <p class="quote">"Being a part of the Model UN club has completely transformed my confidence. The community here is incredibly supportive."</p>
+                        <div class="student-info">
+                            <div class="student-avatar bg-gradient-1"></div>
+                            <div>
+                                <h4>Aisha M.</h4>
+                                <span>Grade 11</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="quote">"The science labs are phenomenal. Getting hands-on experience has inspired me to pursue engineering in the future."</p>
+                        <div class="student-info">
+                            <div class="student-avatar bg-gradient-2"></div>
+                            <div>
+                                <h4>Omar K.</h4>
+                                <span>Grade 12</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="quote">"I love our sports week! It brings the whole school together and the spirit is just unbreakable."</p>
+                        <div class="student-info">
+                            <div class="student-avatar bg-gradient-3"></div>
+                            <div>
+                                <h4>Sara L.</h4>
+                                <span>Grade 8</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" aria-label="Previous Testimonial">❮</button>
+                    <div class="carousel-dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                        <span class="dot" data-index="2"></span>
+                    </div>
+                    <button class="carousel-btn next-btn" aria-label="Next Testimonial">❯</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Parent Voices Section -->
+    <section class="content-section voices-section parent-voices-section">
+        <div class="container text-center">
+            <h2 class="section-title text-white">Parent Voices</h2>
+            <div class="carousel-container" data-aos="fade-up" id="parentCarousel">
+                <div class="testimonials-slider">
+                    <div class="testimonial-slide active">
+                        <p class="quote">"SLISR has provided a nurturing environment where my kids not only excel academically but also grow as individuals. The community here is special."</p>
+                        <div class="student-info">
+                            <div class="student-avatar bg-gradient-1"></div>
+                            <div>
+                                <h4>Fatima A.</h4>
+                                <span>Parent of Grade 5 & 8</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <p class="quote">"The facilities are outstanding, and the communications from the school have always been clear and supportive of our child's growth."</p>
+                        <div class="student-info">
+                            <div class="student-avatar bg-gradient-2"></div>
+                            <div>
+                                <h4>Ahmed R.</h4>
+                                <span>Parent of Grade 10</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn" aria-label="Previous Testimonial">❮</button>
+                    <div class="carousel-dots">
+                        <span class="dot active" data-index="0"></span>
+                        <span class="dot" data-index="1"></span>
+                    </div>
+                    <button class="carousel-btn next-btn" aria-label="Next Testimonial">❯</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accessibility Toggle Button -->
+    <button class="accessibility-btn" aria-label="Toggle accessibility features">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+            <circle cx="12" cy="8" r="1.5" />
+            <path d="M12 11a1 1 0 0 0-1 1v6a1 1 0 0 0 2 0v-6a1 1 0 0 0-1-1z" />
+        </svg>
+    </button>
+
+    <script src="index.js"></script>
+    <script src="campus-life.js"></script>
+</body>
+</html>

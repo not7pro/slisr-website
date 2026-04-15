@@ -1,0 +1,262 @@
+/* Academics Specific Styles */
+
+.academics-hero {
+    min-height: 450px;
+    padding: 80px 20px;
+}
+
+.highlight-text {
+    color: #ffd700;
+    text-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+.section-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 40px;
+    color: #1e293b;
+}
+
+/* Curriculum Section */
+.curriculum-section {
+    padding: 80px 20px;
+    background-color: #f8fafc;
+}
+
+.curriculum-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.curriculum-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 30px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.curriculum-card[data-aos].visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.curriculum-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.curriculum-card h3 {
+    font-size: 22px;
+    color: #2563eb;
+    margin-bottom: 15px;
+}
+
+.curriculum-card p {
+    color: #475569;
+    font-size: 16px;
+}
+
+/* Awards Section (Premium Design) */
+.awards-section {
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle background glows for the awards section */
+.awards-section::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 50%;
+    height: 50%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.awards-section::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    right: -10%;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.awards-title {
+    font-size: 42px;
+    font-weight: 800;
+    margin-bottom: 15px;
+    background: linear-gradient(to right, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 2;
+}
+
+.awards-subtitle {
+    font-size: 18px;
+    color: #94a3b8;
+    max-width: 700px;
+    margin: 0 auto 50px;
+    position: relative;
+    z-index: 2;
+}
+
+.awards-showcase {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.award-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px 30px;
+    flex: 1;
+    max-width: 350px;
+    min-height: 380px;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.award-card[data-aos].visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.award-card:hover {
+    transform: scale(1.05) translateY(-10px);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.award-medal {
+    font-size: 64px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+}
+
+.award-card h3 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+}
+
+.award-detail {
+    color: #ffd700;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 20px;
+}
+
+.award-desc {
+    color: #cbd5e1;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Premium Card Treatment */
+.premium-award {
+    background: linear-gradient(180deg, rgba(255,215,0,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    transform: scale(1.05); /* slightly bigger initially */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-award[data-aos].visible {
+    transform: scale(1.05);
+}
+
+.premium-award:hover {
+    transform: scale(1.1) translateY(-10px);
+    border-color: rgba(255, 215, 0, 0.6);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px rgba(255, 215, 0, 0.2);
+}
+
+.glow-effect {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: skewX(-20deg);
+    animation: sweep 4s infinite;
+}
+
+@keyframes sweep {
+    0% { left: -100%; }
+    20% { left: 200%; }
+    100% { left: 200%; }
+}
+
+@media (max-width: 1024px) {
+    .curriculum-grid, .awards-showcase {
+        grid-template-columns: repeat(2, 1fr);
+        flex-wrap: wrap;
+    }
+    .awards-showcase {
+        flex-direction: column;
+    }
+    .award-card, .premium-award {
+        max-width: 100%;
+        transform: scale(1);
+    }
+    .premium-award[data-aos].visible {
+        transform: scale(1);
+    }
+    .premium-award:hover {
+        transform: scale(1.02) translateY(-5px);
+    }
+}
+
+@media (max-width: 768px) {
+    .curriculum-grid {
+        grid-template-columns: 1fr;
+    }
+    .awards-title {
+        font-size: 32px;
+    }
+    .academics-hero {
+        padding: 60px 20px;
+    }
+}

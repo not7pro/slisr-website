@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Sri Lankan International School Riyadh</title>
+    <meta name="description" content="Get in touch with the Sri Lankan International School Riyadh. Find our address, contact numbers, email, and submit your inquiries online.">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="contact.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <img src="school-logo.png" alt="Sri Lankan International School Riyadh Logo" class="logo-img">
+                </div>
+
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <div class="dropdown">
+                        <a href="about.html" class="dropbtn">About ▼</a>
+                    </div>
+                    <a href="academics.html">Academics</a>
+                    <a href="admissions.html">Admissions</a>
+                    <a href="#">Campus Life</a>
+                    <a href="#">News & Events</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html" class="active">Contact</a>
+                </div>
+
+                <button class="enroll-btn">Enroll Now</button>
+
+                <div class="mobile-menu-btn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section contact-hero">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1 class="hero-title">Get in Touch</h1>
+                <p class="hero-description">We'd love to hear from you. Whether you have a question about admissions, curriculum, or anything else, our team is ready to answer all your questions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Info & Form Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-wrapper">
+                
+                <!-- Contact Information Grid -->
+                <div class="contact-info" data-aos="fade-right">
+                    <h2>Contact Information</h2>
+                    <p class="info-desc">Reach out to us using the details below or visit us at our campus in Riyadh.</p>
+                    
+                    <div class="info-card">
+                        <div class="icon">📍</div>
+                        <div class="details">
+                            <h3>Our Location</h3>
+                            <p>An Nasim Al Gharbi, Riyadh 14231<br>Kingdom of Saudi Arabia</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="icon">📞</div>
+                        <div class="details">
+                            <h3>Phone Numbers</h3>
+                            <p>Front Desk: +966 11 234 5678<br>Admissions: +966 11 234 5679</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="icon">✉️</div>
+                        <div class="details">
+                            <h3>Email Addresses</h3>
+                            <p>General: info@slisr.com<br>Admissions: admissions@slisr.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-card">
+                        <div class="icon">⏰</div>
+                        <div class="details">
+                            <h3>Office Hours</h3>
+                            <p>Sunday - Thursday<br>7:00 AM - 2:30 PM (KSA Time)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form-container" data-aos="fade-left">
+                    <h2>Send us a Message</h2>
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-row">
+                            <div class="form-group half-width">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" placeholder="What is this regarding?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary submit-btn">Send Message</button>
+                    </form>
+                    <div id="contactSuccess" class="success-message hidden">
+                        Your message has been sent successfully. We will contact you soon!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="map-section" data-aos="fade-up">
+        <!-- Embedded Google Maps -->
+        <iframe 
+            class="map-iframe"
+            title="School Location Map"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115984.72061266005!2d46.66668745!3d24.7135517!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e2f0402b85eefb9%3A0xc4ef1de0914edbf1!2sSri%20Lankan%20International%20School%20Riyadh!5e0!3m2!1sen!2ssa!4v1689123456789!5m2!1sen!2ssa" 
+            allowfullscreen="" 
+            loading="lazy">
+        </iframe>
+    </section>
+
+    <!-- Accessibility Toggle Button -->
+    <button class="accessibility-btn" aria-label="Toggle accessibility features">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+            <circle cx="12" cy="8" r="1.5" />
+            <path d="M12 11a1 1 0 0 0-1 1v6a1 1 0 0 0 2 0v-6a1 1 0 0 0-1-1z" />
+        </svg>
+    </button>
+
+    <script src="index.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('contactSuccess').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

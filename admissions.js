@@ -1,54 +1,56 @@
-// Admissions Page Interactivity
+import { db, collection, onSnapshot, query, orderBy } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Scroll Animations using Intersection Observer
-    const animatedElements = document.querySelectorAll('[data-aos]');
-    
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
+    const feesContainer = document.getElementById('dynamicFeesCards');
 
-    const animateOnScroll = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                // Apply a slight delay if specified via data attribute
-                const delay = entry.target.getAttribute('data-aos-delay');
-                if (delay) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, parseInt(delay));
-                } else {
-                    entry.target.classList.add('visible');
-                }
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    animatedElements.forEach(el => animateOnScroll.observe(el));
-
-    // Form Submission Handling
-    const form = document.getElementById('admissionsForm');
-    const successMessage = document.getElementById('formSuccessMessage');
-
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
+    // Real-time listener for Tuition Fees
+    function initFeesSync() {
+        const q = query(collection(db, 'fees'), orderBy('order', 'asc'));
+        
+        onSnapshot(q, (snapshot) => {
+            if (!feesContainer) return;
             
-            // Basic validation check (html attributes handle most of it)
-            const name = document.getElementById('parentName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const grade = document.getElementById('studentGrade').value;
-
-            if (name && email && grade) {
-                // Hide the form and show the success message
-                form.style.display = 'none';
-                successMessage.classList.remove('hidden');
-                
-                // You would normally send the data to a server here using fetch()
-                console.log('Form Submitted. Name:', name, 'Email:', email, 'Grade:', grade);
+            if (snapshot.empty) {
+                renderFallbacks();
+                return;
             }
+
+            let html = '';
+            let count = 0;
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const delay = count * 100;
+                const isFeatured = data.grade.toLowerCase().includes('primary') || data.grade.toLowerCase().includes('middle');
+                
+                html += `
+                    <div class="fee-card ${isFeatured ? 'featured' : ''}" data-aos="zoom-in" data-aos-delay="${delay}">
+                        ${isFeatured ? '<div class="badge">Most Popular</div>' : ''}
+                        <h3>${data.grade}</h3>
+                        <div class="fee-amount">SAR ${data.tuition}<span>/year</span></div>
+                        <ul class="fee-details">
+                            <li>Admission Fee: SAR ${data.admission}</li>
+                            <li>Annual Curriculum Fee</li>
+                            <li>Resource Access Included</li>
+                        </ul>
+                    </div>
+                `;
+                count++;
+            });
+            feesContainer.innerHTML = html;
         });
     }
+
+    function renderFallbacks() {
+        // Just in case DB is empty, show original static info
+        feesContainer.innerHTML = `
+            <div class="fee-card featured" data-aos="zoom-in">
+                <div class="badge">Default View</div>
+                <h3>Standard Enrollment</h3>
+                <div class="fee-amount">Contact Us<span>/year</span></div>
+                <p>Please contact the admissions office for the latest fee schedule.</p>
+            </div>
+        `;
+    }
+
+    initFeesSync();
 });

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SLISR Admin</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Security Check Script -->
+    <script>
+        if (localStorage.getItem('adminLoggedIn') !== 'true') {
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="school-logo.png" alt="SLISR Logo" class="sidebar-logo">
+                <span class="brand-text">Admin Panel</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="overview">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Overview</span>
+                </a>
+                <a href="#" class="nav-item" data-section="messages">
+                    <i class="fas fa-envelope"></i>
+                    <span>Messages</span>
+                    <span class="badge">3</span>
+                </a>
+                <a href="#" class="nav-item" data-section="academics">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Academics</span>
+                </a>
+                <a href="#" class="nav-item" data-section="news">
+                    <i class="fas fa-newspaper"></i>
+                    <span>News & Events</span>
+                </a>
+                <a href="#" class="nav-item" data-section="gallery">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery</span>
+                </a>
+                <div class="nav-divider"></div>
+                <a href="#" class="nav-item" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div class="header-left">
+                    <h1 id="sectionTitle">Dashboard Overview</h1>
+                    <p id="sectionSubtitle">Welcome back, Admin! Here's what's happening today.</p>
+                </div>
+                <div class="header-right">
+                    <button class="action-btn-primary">
+                        <i class="fas fa-plus"></i>
+                        <span>New Post</span>
+                    </button>
+                    <div class="user-profile">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff" alt="User">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Overview Section -->
+            <div id="overviewSection" class="dashboard-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Total Visitors</h3>
+                            <span class="number">1,284</span>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> 12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>New Inquiries</h3>
+                            <span class="number">12</span>
+                            <span class="trend up"><i class="fas fa-arrow-up"></i> 5%</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Active Events</h3>
+                            <span class="number">4</span>
+                            <span class="trend-neutral">Same as last week</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-grid">
+                    <div class="recent-card messages-preview">
+                        <div class="card-header">
+                            <h2>Recent Messages</h2>
+                            <a href="#" onclick="switchSection('messages')" class="view-all">View All</a>
+                        </div>
+                        <div class="message-list-mini" id="miniMessageList">
+                            <div class="empty-state">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Loading activity...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recent-card updates-preview">
+                        <div class="card-header">
+                            <h2>System Activity</h2>
+                        </div>
+                        <div class="activity-timeline">
+                            <div class="timeline-item">
+                                <span class="time">10:45 AM</span>
+                                <p>Gallery updated with "International Day" photos</p>
+                            </div>
+                            <div class="timeline-item">
+                                <span class="time">Yesterday</span>
+                                <p>Fee structure for 2026 updated</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Section -->
+            <div id="messagesSection" class="dashboard-section">
+                <div class="messages-layout">
+                    <div class="messages-sidebar">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search inquiries...">
+                        </div>
+                        <div class="inbox-list" id="inboxList">
+                            <!-- Messages populated by JS -->
+                        </div>
+                    </div>
+                    <div class="message-viewer" id="messageViewer">
+                        <div class="viewer-empty">
+                            <i class="fas fa-envelope-open"></i>
+                            <p>Select a message to view details</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

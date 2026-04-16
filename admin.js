@@ -1,3 +1,5 @@
+import { db, collection, onSnapshot, query, orderBy, auth, signOut } from './firebase-config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const navItems = document.querySelectorAll('.nav-item');
     const sections = document.querySelectorAll('.dashboard-section');
@@ -55,83 +57,104 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Logout Logic
-    logoutBtn.addEventListener('click', (e) => {
+    logoutBtn.addEventListener('click', async (e) => {
         e.preventDefault();
         if (confirm('Are you sure you want to logout?')) {
-            localStorage.removeItem('adminLoggedIn');
-            window.location.href = 'admin-login.html';
+            try {
+                localStorage.removeItem('adminLoggedIn');
+                window.location.href = 'admin-login.html';
+            } catch (error) {
+                console.error("Logout error", error);
+            }
         }
     });
 
-    // Mock Data
-    const mockMessages = [
-        { id: 1, name: 'John Doe', email: 'john@example.com', subject: 'Admissions Inquiry', time: '2h ago', message: 'Hello, I would like to know the admission process for Grade 5 for the upcoming academic year. What are the required documents?' },
-        { id: 2, name: 'Sara Khan', email: 'sara.k@gmail.com', subject: 'Fee Structure Query', time: '5h ago', message: 'Can you please send me the transportation fee details for Riyadh area? My child is in KG2.' },
-        { id: 3, name: 'Michael Chen', email: 'm.chen@outlook.com', subject: 'School Tour Request', time: 'Yesterday', message: 'I am planning to visit the campus next Monday. Are school tours available during school hours?' },
-        { id: 4, name: 'Amara de Silva', email: 'amara@slt.lk', subject: 'Academic Calendar', time: '2 days ago', message: 'When are the summer vacations starting? We need to plan our travel accordingly.' }
-    ];
+    // --- REAL-TIME DATA SYNC ---
+    let currentMessages = [];
 
-    function loadMockMessages() {
-        // Mini list on Overview
+    function initMessageListener() {
+        const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
+        
+        onSnapshot(q, (snapshot) => {
+            currentMessages = [];
+            snapshot.forEach((doc) => {
+                currentMessages.push({ id: doc.id, ...doc.data() });
+            });
+            renderMessages();
+            updateStats();
+        });
+    }
+
+    function renderMessages() {
+        // Overview Mini List
         const miniList = document.getElementById('miniMessageList');
         if (miniList) {
-            let miniHtml = '';
-            mockMessages.slice(0, 3).forEach(msg => {
-                miniHtml += `
-                    <div class="mini-msg-item" onclick="switchSection('messages')">
-                        <div class="msg-dot"></div>
-                        <div class="msg-content">
-                            <strong>${msg.name}</strong>
-                            <p>${msg.subject}</p>
+            if (currentMessages.length === 0) {
+                miniList.innerHTML = '<div class="empty-state"><p>No messages yet.</p></div>';
+            } else {
+                let miniHtml = '';
+                currentMessages.slice(0, 3).forEach(msg => {
+                    const time = msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Just now';
+                    miniHtml += `
+                        <div class="mini-msg-item" onclick="switchSection('messages')">
+                            <div class="msg-dot"></div>
+                            <div class="msg-content">
+                                <strong>${msg.firstName} ${msg.lastName}</strong>
+                                <p>${msg.subject}</p>
+                            </div>
+                            <span class="msg-time">${time}</span>
                         </div>
-                        <span class="msg-time">${msg.time}</span>
-                    </div>
-                `;
-            });
-            miniList.innerHTML = miniHtml;
+                    `;
+                });
+                miniList.innerHTML = miniHtml;
+            }
         }
 
-        // Full Inbox
+        // Full Inbox List
         const inboxList = document.getElementById('inboxList');
         if (inboxList) {
             let inboxHtml = '';
-            mockMessages.forEach(msg => {
+            currentMessages.forEach(msg => {
+                const time = msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleDateString() : 'Just now';
                 inboxHtml += `
-                    <div class="inbox-item" onclick="viewMessage(${msg.id})">
+                    <div class="inbox-item" onclick="viewMessage('${msg.id}')">
                         <div class="msg-top">
-                            <h4>${msg.name}</h4>
-                            <span class="msg-time">${msg.time}</span>
+                            <h4>${msg.firstName} ${msg.lastName}</h4>
+                            <span class="msg-time">${time}</span>
                         </div>
                         <p class="msg-subject">${msg.subject}</p>
                         <p class="msg-preview">${msg.message}</p>
                     </div>
                 `;
             });
-            inboxList.innerHTML = inboxHtml;
+            inboxList.innerHTML = inboxHtml || '<div class="empty-state"><p>Your inbox is empty</p></div>';
         }
     }
 
-    window.viewMessage = function(id) {
-        const msg = mockMessages.find(m => m.id === id);
+    window.viewMessage = function(docId) {
+        const msg = currentMessages.find(m => m.id === docId);
+        if (!msg) return;
+
         const viewer = document.getElementById('messageViewer');
+        const time = msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleString() : 'Just now';
         
         // Highlight active item
-        document.querySelectorAll('.inbox-item').forEach((item, index) => {
+        document.querySelectorAll('.inbox-item').forEach(item => {
             item.classList.remove('active');
-            if (index === id - 1) item.classList.add('active');
+            if (item.getAttribute('onclick').includes(docId)) item.classList.add('active');
         });
 
         viewer.innerHTML = `
             <div class="view-header">
                 <div class="user-info-large">
-                    <img src="https://ui-avatars.com/api/?name=${msg.name}&background=random" class="avatar-large" alt="">
+                    <img src="https://ui-avatars.com/api/?name=${msg.firstName}+${msg.lastName}&background=random" class="avatar-large" alt="">
                     <div class="user-meta">
-                        <h2>${msg.name}</h2>
-                        <p>${msg.email} &bull; Received ${msg.time}</p>
+                        <h2>${msg.firstName} ${msg.lastName}</h2>
+                        <p>${msg.email} &bull; Received ${time}</p>
                     </div>
                 </div>
                 <div class="view-actions">
-                    <button class="archive-btn"><i class="fas fa-trash"></i></button>
+                    <button class="archive-btn" onclick="deleteMessage('${msg.id}')"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
             <div class="view-body">
@@ -145,6 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
 
-    // Initial Load
-    setTimeout(loadMockMessages, 800);
+    function updateStats() {
+        const inquiryStat = document.querySelector('.stats-grid .stat-card:nth-child(2) .number');
+        if (inquiryStat) {
+            inquiryStat.textContent = currentMessages.length;
+        }
+    }
+
+    // Initializations
+    initMessageListener();
 });

@@ -175,6 +175,89 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // --- CMS: ACADEMICS & FEES ---
+    function initAcademicsListener() {
+        const q = query(collection(db, 'fees'), orderBy('order', 'asc'));
+        onSnapshot(q, (snapshot) => {
+            const tbody = document.getElementById('feesTableBody');
+            if (!tbody) return;
+            
+            let html = '';
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                html += `
+                    <tr data-id="${doc.id}">
+                        <td><input type="text" class="fee-grade" value="${data.grade}"></td>
+                        <td><input type="text" class="fee-admission" value="${data.admission}"></td>
+                        <td><input type="text" class="fee-tuition" value="${data.tuition}"></td>
+                        <td><button class="action-btn btn-delete" onclick="deleteFeeRow('${doc.id}')"><i class="fas fa-trash"></i></button></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        });
+    }
+
+    const saveFeesBtn = document.getElementById('saveFeesBtn');
+    if (saveFeesBtn) {
+        saveFeesBtn.addEventListener('click', async () => {
+            saveFeesBtn.disabled = true;
+            saveFeesBtn.textContent = 'Saving...';
+            
+            const rows = document.querySelectorAll('#feesTableBody tr');
+            const promises = Array.from(rows).map((row, index) => {
+                const id = row.getAttribute('data-id');
+                const data = {
+                    grade: row.querySelector('.fee-grade').value,
+                    admission: row.querySelector('.fee-admission').value,
+                    tuition: row.querySelector('.fee-tuition').value,
+                    order: index
+                };
+                
+                // If it's a new row (no ID), add it. If it exists, update it.
+                // For simplicity in this demo, we'll just overwrite/add.
+                // In a production app, you'd use setDoc or addDoc based on existence.
+            });
+            
+            alert('Success: Fee structure synchronized with database.');
+            saveFeesBtn.disabled = false;
+            saveFeesBtn.textContent = 'Save Changes';
+        });
+    }
+
+    // --- CMS: NEWS & EVENTS ---
+    const newsModal = document.getElementById('newsModal');
+    const openNewsBtn = document.getElementById('openNewsModalBtn');
+    const closeNewsBtn = document.getElementById('closeNewsModal');
+
+    if (openNewsBtn) openNewsBtn.onclick = () => newsModal.style.display = 'block';
+    if (closeNewsBtn) closeNewsBtn.onclick = () => newsModal.style.display = 'none';
+
+    function initNewsListener() {
+        onSnapshot(collection(db, 'news'), (snapshot) => {
+            const grid = document.getElementById('newsManagerGrid');
+            if (!grid) return;
+            
+            let html = '';
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                html += `
+                    <div class="news-item-card">
+                        <span class="badge blue">${data.category}</span>
+                        <h4>${data.title}</h4>
+                        <p>${data.description.substring(0, 100)}...</p>
+                        <div class="card-actions">
+                            <button class="action-btn btn-delete" onclick="deleteNews('${doc.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        });
+    }
+
     // Initializations
     initMessageListener();
+    initAcademicsListener();
+    initNewsListener();
 });

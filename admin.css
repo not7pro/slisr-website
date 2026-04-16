@@ -463,6 +463,144 @@ body {
     color: #94a3b8;
 }
 
+/* CMS Specific Styles */
+.cms-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    margin-bottom: 30px;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.cms-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.cms-table th {
+    background: #f8fafc;
+    padding: 15px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.cms-table td {
+    padding: 15px;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 14px;
+}
+
+.cms-table input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-family: inherit;
+}
+
+.save-btn {
+    background: var(--primary-blue);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.save-btn:hover {
+    background: #1d4ed8;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.6);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: #fff;
+    margin: 5% auto;
+    padding: 40px;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.close {
+    font-size: 28px;
+    cursor: pointer;
+    color: #94a3b8;
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.news-item-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #edf2f7;
+}
+
+.news-item-card h4 {
+    margin-bottom: 10px;
+    color: #0f172a;
+}
+
+.news-item-card p {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-delete { background: #fee2e2; color: #ef4444; }
+
 /* Responsive Admin */
 /* Message Viewer */
 .message-viewer {

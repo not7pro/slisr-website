@@ -159,7 +159,81 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Academics Section -->
+            <div id="academicsSection" class="dashboard-section">
+                <div class="cms-card">
+                    <div class="card-header">
+                        <h2>Tuition Fees Management</h2>
+                        <button class="action-btn-primary" id="addFeeRowBtn">
+                            <i class="fas fa-plus"></i> Add Row
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table class="cms-table" id="feesTable">
+                            <thead>
+                                <tr>
+                                    <th>Grade Level</th>
+                                    <th>Admission Fee</th>
+                                    <th>Tuition Fee (Annual)</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="feesTableBody">
+                                <!-- Loaded from Firestore -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <button class="save-btn" id="saveFeesBtn">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- News Section -->
+            <div id="newsSection" class="dashboard-section">
+                <div class="cms-card">
+                    <div class="card-header">
+                        <h2>Manage News & Events</h2>
+                        <button class="action-btn-primary" id="openNewsModalBtn">
+                            <i class="fas fa-plus"></i> New Post
+                        </button>
+                    </div>
+                    <div class="news-grid" id="newsManagerGrid">
+                        <!-- Loaded from Firestore -->
+                    </div>
+                </div>
+            </div>
         </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>New News/Event Post</h2>
+                <span class="close" id="closeNewsModal">&times;</span>
+            </div>
+            <form id="newsForm">
+                <div class="form-group">
+                    <label for="newsTitle">Title</label>
+                    <input type="text" id="newsTitle" placeholder="Enter post title" aria-label="News Title" required>
+                </div>
+                <div class="form-group">
+                    <label for="newsCategory">Category</label>
+                    <select id="newsCategory" aria-label="Select Category">
+                        <option value="Academic">Academic</option>
+                        <option value="Event">Event</option>
+                        <option value="Update">General Update</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newsDesc">Description</label>
+                    <textarea id="newsDesc" rows="4" placeholder="Write the news content here..." aria-label="News Description"></textarea>
+                </div>
+                <button type="submit" class="save-btn">Publish Post</button>
+            </form>
+        </div>
     </div>
 
     <script type="module" src="admin.js"></script>

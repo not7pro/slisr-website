@@ -347,6 +347,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    window.deletePhoto = async function(id) {
+        if (confirm('Permanently delete this photo?')) {
+            try {
+                await deleteDoc(doc(db, 'gallery', id));
+            } catch (error) {
+                console.error("Delete error", error);
+            }
+        }
+    };
+
+    const addPhotoBtn = document.getElementById('addPhotoBtn');
+    if (addPhotoBtn) {
+        addPhotoBtn.onclick = async () => {
+            const url = prompt('Enter image URL:');
+            if (url) {
+                try {
+                    await addDoc(collection(db, 'gallery'), {
+                        url: url,
+                        timestamp: serverTimestamp()
+                    });
+                } catch (error) {
+                    console.error("Add photo error", error);
+                }
+            }
+        };
+    }
+
     // Initializations
     initMessageListener();
     initAcademicsListener();

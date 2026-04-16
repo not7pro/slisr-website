@@ -326,8 +326,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function initGalleryListener() {
+        onSnapshot(collection(db, 'gallery'), (snapshot) => {
+            const grid = document.getElementById('galleryManagerGrid');
+            if (!grid) return;
+            
+            let html = '';
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                html += `
+                    <div class="gallery-item-card">
+                        <img src="${data.url}" alt="">
+                        <div class="gallery-item-info">
+                            <button class="action-btn btn-delete" onclick="deletePhoto('${doc.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        });
+    }
+
     // Initializations
     initMessageListener();
     initAcademicsListener();
     initNewsListener();
+    initGalleryListener();
 });

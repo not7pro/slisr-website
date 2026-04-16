@@ -560,11 +560,28 @@ body {
     color: #94a3b8;
 }
 
-.news-grid {
+.news-grid, .gallery-manager-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     margin-top: 30px;
+}
+
+.gallery-item-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #edf2f7;
+}
+
+.gallery-item-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.gallery-item-info {
+    padding: 15px;
 }
 
 .news-item-card {

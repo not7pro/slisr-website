@@ -1,4 +1,4 @@
-import { db, collection, onSnapshot, query, orderBy, auth, signOut } from './firebase-config.js';
+import { db, collection, onSnapshot, query, orderBy, auth, signOut, doc, setDoc, deleteDoc, serverTimestamp } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const navItems = document.querySelectorAll('.nav-item');
@@ -214,24 +214,94 @@ document.addEventListener('DOMContentLoaded', () => {
                     order: index
                 };
                 
-                // If it's a new row (no ID), add it. If it exists, update it.
-                // For simplicity in this demo, we'll just overwrite/add.
-                // In a production app, you'd use setDoc or addDoc based on existence.
+                if (id) {
+                    return setDoc(doc(db, 'fees', id), data);
+                } else {
+                    return addDoc(collection(db, 'fees'), data);
+                }
             });
             
-            alert('Success: Fee structure synchronized with database.');
+            try {
+                await Promise.all(promises);
+                alert('Success: Fee structure saved to database.');
+            } catch (error) {
+                console.error("Save error", error);
+                alert('Error saving data.');
+            }
+            
             saveFeesBtn.disabled = false;
             saveFeesBtn.textContent = 'Save Changes';
         });
     }
 
+    window.addFeeRow = function() {
+        const tbody = document.getElementById('feesTableBody');
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><input type="text" class="fee-grade" placeholder="e.g. Grade 1"></td>
+            <td><input type="text" class="fee-admission" placeholder="e.g. 500"></td>
+            <td><input type="text" class="fee-tuition" placeholder="e.g. 5000"></td>
+            <td><button class="action-btn btn-delete" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button></td>
+        `;
+        tbody.appendChild(tr);
+    };
+
+    window.deleteFeeRow = async function(id) {
+        if (confirm('Delete this fee entry?')) {
+            try {
+                await deleteDoc(doc(db, 'fees', id));
+            } catch (error) {
+                console.error("Delete error", error);
+            }
+        }
+    };
+
     // --- CMS: NEWS & EVENTS ---
     const newsModal = document.getElementById('newsModal');
     const openNewsBtn = document.getElementById('openNewsModalBtn');
     const closeNewsBtn = document.getElementById('closeNewsModal');
+    const newsForm = document.getElementById('newsForm');
 
     if (openNewsBtn) openNewsBtn.onclick = () => newsModal.style.display = 'block';
     if (closeNewsBtn) closeNewsBtn.onclick = () => newsModal.style.display = 'none';
+
+    if (newsForm) {
+        newsForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = newsForm.querySelector('button');
+            btn.disabled = true;
+            btn.textContent = 'Publishing...';
+
+            const data = {
+                title: document.getElementById('newsTitle').value,
+                category: document.getElementById('newsCategory').value,
+                description: document.getElementById('newsDesc').value,
+                timestamp: serverTimestamp()
+            };
+
+            try {
+                await addDoc(collection(db, 'news'), data);
+                newsForm.reset();
+                newsModal.style.display = 'none';
+                alert('Post published successfully!');
+            } catch (error) {
+                console.error("News error", error);
+                alert('Error publishing post.');
+            }
+            btn.disabled = false;
+            btn.textContent = 'Publish Post';
+        };
+    }
+
+    window.deleteNews = async function(id) {
+        if (confirm('Permanently delete this post?')) {
+            try {
+                await deleteDoc(doc(db, 'news', id));
+            } catch (error) {
+                console.error("Delete error", error);
+            }
+        }
+    };
 
     function initNewsListener() {
         onSnapshot(collection(db, 'news'), (snapshot) => {

@@ -583,12 +583,12 @@ section {
 }
 
 .loader-logo {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     border-radius: 50%;
     object-fit: contain;
     background: #fff;
-    padding: 5px;
+    padding: 0;
     animation: loaderPulse 1.5s ease-in-out infinite;
     box-shadow: 0 0 0 0 rgba(255,255,255,0.4);
 }

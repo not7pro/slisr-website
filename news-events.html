@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Events - SLISR</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="news-events.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Page Loader -->
+    <div id="pageLoader" class="page-loader">
+        <div class="loader-content">
+            <img src="school-logo.png" alt="SLISR Logo" class="loader-logo">
+            <div class="loader-bar-container">
+                <div class="loader-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass">
+        <div class="nav-container">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="school-logo.png" alt="SLISR Logo" class="logo-img">
+                    </a>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="academics.html">Academics</a>
+                    <a href="admissions.html">Admissions</a>
+                    <a href="campus-life.html">Campus Life</a>
+                    <a href="news-events.html" class="active">News & Events</a>
+                    <a href="gallery.html">Gallery</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <button class="enroll-btn" onclick="window.location.href='admissions.html'">Enroll Now</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="news-header">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h1 class="hero-title">Latest News & Events</h1>
+                <p class="hero-subtitle">Stay updated with the latest happenings at Sri Lankan International School Riyadh.</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- News Grid Section -->
+    <section class="news-section">
+        <div class="container">
+            <div class="news-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="Academic">Academic</button>
+                <button class="filter-btn" data-filter="Event">Events</button>
+                <button class="filter-btn" data-filter="Update">Updates</button>
+            </div>
+
+            <div id="newsGrid" class="news-grid">
+                <!-- Dynamic Content Loads Here -->
+                <div class="news-loading">
+                    <div class="spinner"></div>
+                    <p>Fetching latest updates...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <img src="school-logo.png" alt="SLISR Logo" class="footer-logo">
+                <p>Providing quality British curriculum education since 1988.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="news-events.html">News & Events</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Info</h4>
+                <p>info@slisr.com</p>
+                <p>+966 11 234 5678</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; <span class="current-year">2026</span> Sri Lankan International School Riyadh.</span>
+        </div>
+    </footer>
+
+    <script type="module" src="news-events.js"></script>
+    <script>
+        window.addEventListener('load', function() {
+            setTimeout(() => document.getElementById('pageLoader').classList.add('hidden'), 1500);
+        });
+    </script>
+</body>
+</html>

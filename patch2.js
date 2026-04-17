@@ -1,33 +1,30 @@
-import { db, ref, push, serverTimestamp } from './firebase-config.js';
+const fs = require('fs');
 
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contactForm');
-    const successMsg = document.getElementById('contactSuccess');
-
-    if (contactForm) {
-        contactForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const submitBtn = contactForm.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
+try {
+    let content = fs.readFileSync('contact.js', 'utf8');
+    
+    const targetLF = `            try {
+                // Add to Firestore
+                await addDoc(collection(db, 'messages'), formData);
+                
+                // Show Success
+                contactForm.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+                
+                // Optional: Smooth scroll to success message
+                successMsg.scrollIntoView({ behavior: 'smooth' });
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert("Sorry, there was an error sending your message. Please try again later.");
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            }`;
             
-            // UI Feedback
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-
-            const formData = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value,
-                timestamp: serverTimestamp(),
-                status: 'new'
-            };
-
-            try {
+    const targetCRLF = targetLF.replace(/\n/g, '\r\n');
+    
+    const replacement = `            try {
                 // Add to Firestore with a 7-second timeout to prevent infinite hanging
-                const addPromise = push(ref(db, 'messages'), formData);
+                const addPromise = addDoc(collection(db, 'messages'), formData);
                 const timeoutPromise = new Promise((_, reject) => 
                     setTimeout(() => reject(new Error("Timeout: Database unreachable")), 7000)
                 );
@@ -53,7 +50,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(errorMsg);
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
-            }
-        });
-    }
-});
+            }`;
+            
+    content = content.replace(targetLF, replacement);
+    content = content.replace(targetCRLF, replacement);
+    
+    fs.writeFileSync('contact.js', content, 'utf8');
+    console.log("contact.js patched successfully");
+} catch (e) {
+    console.error("Error patching contact.js", e);
+}

@@ -1,4 +1,4 @@
-import { db, collection, onSnapshot, query, orderBy, auth, signOut, doc, setDoc, deleteDoc, serverTimestamp } from './firebase-config.js';
+import { db, ref, set, push, remove, onValue, query, orderByChild, auth, signOut, serverTimestamp } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const navItems = document.querySelectorAll('.nav-item');
@@ -73,12 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentMessages = [];
 
     function initMessageListener() {
-        const q = query(collection(db, 'messages'), orderBy('timestamp', 'desc'));
+        const q = query(ref(db, 'messages'), orderByChild('timestamp'));
         
-        onSnapshot(q, (snapshot) => {
+        onValue(q, (snapshot) => {
             currentMessages = [];
-            snapshot.forEach((doc) => {
-                currentMessages.push({ id: doc.id, ...doc.data() });
+            snapshot.forEach((childSnapshot) => {
+                currentMessages.push({ id: childSnapshot.key, ...childSnapshot.val() });
+            });
+            currentMessages.reverse();
             });
             renderMessages();
             updateStats();
@@ -94,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 let miniHtml = '';
                 currentMessages.slice(0, 3).forEach(msg => {
-                    const time = msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Just now';
+                    const time = msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Just now';
                     miniHtml += `
                         <div class="mini-msg-item" onclick="switchSection('messages')">
                             <div class="msg-dot"></div>
@@ -115,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (inboxList) {
             let inboxHtml = '';
             currentMessages.forEach(msg => {
-                const time = msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleDateString() : 'Just now';
+                const time = msg.timestamp ? new Date(msg.timestamp).toLocaleDateString() : 'Just now';
                 inboxHtml += `
                     <div class="inbox-item" onclick="viewMessage('${msg.id}')">
                         <div class="msg-top">
@@ -136,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!msg) return;
 
         const viewer = document.getElementById('messageViewer');
-        const time = msg.timestamp ? new Date(msg.timestamp.seconds * 1000).toLocaleString() : 'Just now';
+        const time = msg.timestamp ? new Date(msg.timestamp).toLocaleString() : 'Just now';
         
         // Highlight active item
         document.querySelectorAll('.inbox-item').forEach(item => {
@@ -177,20 +179,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- CMS: ACADEMICS & FEES ---
     function initAcademicsListener() {
-        const q = query(collection(db, 'fees'), orderBy('order', 'asc'));
-        onSnapshot(q, (snapshot) => {
+        const q = query(ref(db, 'fees'), orderByChild('order'));
+        onValue(q, (snapshot) => {
             const tbody = document.getElementById('feesTableBody');
             if (!tbody) return;
             
             let html = '';
             snapshot.forEach((doc) => {
+                const data = doc.val();
                 const data = doc.data();
                 html += `
-                    <tr data-id="${doc.id}">
+                    <tr data-id="${doc.key}">
                         <td><input type="text" class="fee-grade" value="${data.grade}"></td>
                         <td><input type="text" class="fee-admission" value="${data.admission}"></td>
                         <td><input type="text" class="fee-tuition" value="${data.tuition}"></td>
-                        <td><button class="action-btn btn-delete" onclick="deleteFeeRow('${doc.id}')"><i class="fas fa-trash"></i></button></td>
+                        <td><button class="action-btn btn-delete" onclick="deleteFeeRow('${doc.key}')"><i class="fas fa-trash"></i></button></td>
                     </tr>
                 `;
             });
@@ -215,9 +218,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 
                 if (id) {
-                    return setDoc(doc(db, 'fees', id), data);
+                    return set(ref(db, 'fees/' + id), data);
                 } else {
-                    return addDoc(collection(db, 'fees'), data);
+                    return push(ref(db, 'fees'), data);
                 }
             });
             
@@ -249,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.deleteFeeRow = async function(id) {
         if (confirm('Delete this fee entry?')) {
             try {
-                await deleteDoc(doc(db, 'fees', id));
+                await remove(ref(db, 'fees/' + id));
             } catch (error) {
                 console.error("Delete error", error);
             }
@@ -280,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             try {
-                await addDoc(collection(db, 'news'), data);
+                await push(ref(db, 'news'), data);
                 newsForm.reset();
                 newsModal.style.display = 'none';
                 alert('Post published successfully!');
@@ -296,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.deleteNews = async function(id) {
         if (confirm('Permanently delete this post?')) {
             try {
-                await deleteDoc(doc(db, 'news', id));
+                await remove(ref(db, 'news/' + id));
             } catch (error) {
                 console.error("Delete error", error);
             }
@@ -304,7 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function initNewsListener() {
-        onSnapshot(collection(db, 'news'), (snapshot) => {
+        onValue(ref(db, 'news'), (snapshot) => {
+
             const grid = document.getElementById('newsManagerGrid');
             if (!grid) return;
             
@@ -317,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h4>${data.title}</h4>
                         <p>${data.description.substring(0, 100)}...</p>
                         <div class="card-actions">
-                            <button class="action-btn btn-delete" onclick="deleteNews('${doc.id}')">Delete</button>
+                            <button class="action-btn btn-delete" onclick="deleteNews('${doc.key}')">Delete</button>
                         </div>
                     </div>
                 `;
@@ -327,7 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initGalleryListener() {
-        onSnapshot(collection(db, 'gallery'), (snapshot) => {
+        onValue(ref(db, 'gallery'), (snapshot) => {
+
             const grid = document.getElementById('galleryManagerGrid');
             if (!grid) return;
             
@@ -338,7 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="gallery-item-card">
                         <img src="${data.url}" alt="">
                         <div class="gallery-item-info">
-                            <button class="action-btn btn-delete" onclick="deletePhoto('${doc.id}')">Delete</button>
+                            <button class="action-btn btn-delete" onclick="deletePhoto('${doc.key}')">Delete</button>
                         </div>
                     </div>
                 `;
@@ -350,7 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.deletePhoto = async function(id) {
         if (confirm('Permanently delete this photo?')) {
             try {
-                await deleteDoc(doc(db, 'gallery', id));
+                await remove(ref(db, 'gallery/' + id));
             } catch (error) {
                 console.error("Delete error", error);
             }
@@ -363,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const url = prompt('Enter image URL:');
             if (url) {
                 try {
-                    await addDoc(collection(db, 'gallery'), {
+                    await push(ref(db, 'gallery'), {
                         url: url,
                         timestamp: serverTimestamp()
                     });

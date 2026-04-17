@@ -1,0 +1,35 @@
+# Git ignore file - exclude non-website files
+.gemini/
+.antigravity/
+.cache/
+.idlerc/
+.ipython/
+.java/
+.lunarclient/
+.openjfx/
+.redhat/
+.ssh/
+.thumbnails/
+.vscode/
+.node_repl_history
+AppData/
+Contacts/
+CrossDevice/
+Desktop/
+Downloads/
+Favorites/
+IntelGraphicsProfiles/
+Links/
+Music/
+OneDrive/
+OneDrive - Sri Lankan International School Riyadh/
+Saved Games/
+Searches/
+Videos/
+NTUSER.DAT
+NTUSER.DAT*
+ntuser.dat*
+ntuser.ini
+-1.14-windows.xml
+# Keep these website-specific JS files
+!Slisr website.js

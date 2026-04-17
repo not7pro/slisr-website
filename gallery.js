@@ -1,22 +1,25 @@
-import { db, collection, onSnapshot, query, orderBy } from './firebase-config.js';
+import { db, ref, onValue, query, orderByChild } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const galleryGrid = document.getElementById('galleryGrid');
 
     function initGallerySync() {
-        const q = query(collection(db, 'gallery'), orderBy('timestamp', 'desc'));
+        const q = query(ref(db, 'gallery'), orderByChild('timestamp'));
         
-        onSnapshot(q, (snapshot) => {
+        onValue(q, (snapshot) => {
             if (!galleryGrid) return;
 
-            if (snapshot.empty) {
+            if (!snapshot.exists()) {
                 galleryGrid.innerHTML = '<div class="gallery-empty"><p>No photos available in the gallery yet.</p></div>';
                 return;
             }
 
             let html = '';
+            const items = [];
             snapshot.forEach((doc) => {
-                const data = doc.data();
+                items.push(doc.val());
+            });
+            items.reverse().forEach((data) => {
                 html += `
                     <div class="gallery-item" data-aos="fade-up">
                         <div class="gallery-image-wrapper">

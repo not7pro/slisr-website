@@ -1,4 +1,4 @@
-import { db, collection, onSnapshot, query, orderBy } from './firebase-config.js';
+import { db, ref, onValue, query, orderByChild } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const newsGrid = document.getElementById('newsGrid');
@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Real-time listener for News collection
     function fetchNews() {
-        const q = query(collection(db, 'news'), orderBy('timestamp', 'desc'));
+        const q = query(ref(db, 'news'), orderByChild('timestamp'));
         
-        onSnapshot(q, (snapshot) => {
+        onValue(q, (snapshot) => {
             allNews = [];
             snapshot.forEach((doc) => {
                 allNews.push({ id: doc.id, ...doc.data() });

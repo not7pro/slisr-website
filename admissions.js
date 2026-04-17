@@ -1,16 +1,16 @@
-import { db, collection, onSnapshot, query, orderBy } from './firebase-config.js';
+import { db, ref, onValue, query, orderByChild } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const feesContainer = document.getElementById('dynamicFeesCards');
 
     // Real-time listener for Tuition Fees
     function initFeesSync() {
-        const q = query(collection(db, 'fees'), orderBy('order', 'asc'));
+        const q = query(ref(db, 'fees'), orderByChild('order'));
         
-        onSnapshot(q, (snapshot) => {
+        onValue(q, (snapshot) => {
             if (!feesContainer) return;
             
-            if (snapshot.empty) {
+            if (!snapshot.exists()) {
                 renderFallbacks();
                 return;
             }

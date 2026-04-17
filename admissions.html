@@ -110,58 +110,33 @@
         </div>
     </section>
 
-    <!-- Student Admission Application Form -->
-    <section class="inquiry-section">
-        <div class="container">
-            <div class="inquiry-wrapper" style="max-width: 900px; margin: 0 auto; display: block;">
-                <div class="inquiry-text" data-aos="fade-up" style="text-align: center; margin-bottom: 40px; padding-right: 0;">
-                    <h2>Admission Application</h2>
-                    <p>Take the first step towards a brilliant future. Submit your formal application for enrollment below.</p>
+    <!-- Ready to Join CTA Section -->
+    <section class="inquiry-section" style="background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%); padding: 80px 20px;">
+        <div class="container" style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <h2 style="color: #fff; font-size: 38px; font-weight: 800; margin-bottom: 16px;">Ready to Join SLISR?</h2>
+            <p style="color: rgba(255,255,255,0.85); font-size: 18px; max-width: 600px; margin: 0 auto 50px; line-height: 1.7;">Take the first step towards an exceptional education. Submit your official enrollment application today.</p>
+
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 50px;">
+                <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 28px 20px;">
+                    <div style="font-size: 36px; margin-bottom: 12px;">📋</div>
+                    <h3 style="color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 8px;">Simple Process</h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.6;">Our streamlined 4-step admissions process gets you enrolled quickly.</p>
                 </div>
-                <div class="inquiry-form-container" data-aos="fade-up" data-aos-delay="100">
-                    <form id="admissionsForm" class="admissions-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="form-group">
-                            <label for="parentName">Parent/Guardian Name</label>
-                            <input type="text" id="parentName" name="parentName" placeholder="Enter your full name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="studentName">Student's Full Name</label>
-                            <input type="text" id="studentName" name="studentName" placeholder="Enter student's name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Enter parent's email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number</label>
-                            <input type="tel" id="phone" name="phone" placeholder="Enter contact number" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="studentGrade">Applying Grade Level</label>
-                            <select id="studentGrade" name="studentGrade" required>
-                                <option value="" disabled selected>Select Grade</option>
-                                <option value="KG">Kindergarten</option>
-                                <option value="Primary (1-5)">Primary School (Grades 1-5)</option>
-                                <option value="Middle (6-8)">Middle School (Grades 6-8)</option>
-                                <option value="High (9-12)">High School (Grades 9-12)</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="prevSchool">Previous School (Optional)</label>
-                            <input type="text" id="prevSchool" name="prevSchool" placeholder="Name of previous institution">
-                        </div>
-                        <div class="form-group" style="grid-column: 1 / -1;">
-                            <label for="additionalNotes">Additional Notes / Medical Info</label>
-                            <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Any specific requirements or questions?"></textarea>
-                        </div>
-                        <div style="grid-column: 1 / -1; text-align: center;">
-                            <button type="submit" class="btn btn-primary submit-btn" style="width: auto; padding: 15px 40px;">Submit Official Application</button>
-                        </div>
-                    </form>
-                    <div id="formSuccessMessage" class="success-message hidden" style="text-align: center; margin-top: 20px;">
-                        <p><strong>Application Received!</strong><br>Our admissions office will contact you via email shortly.</p>
-                    </div>
+                <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 28px 20px;">
+                    <div style="font-size: 36px; margin-bottom: 12px;">🎓</div>
+                    <h3 style="color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 8px;">Pearson Edexcel</h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.6;">World-class British curriculum with internationally recognised qualifications.</p>
                 </div>
+                <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); border-radius: 16px; padding: 28px 20px;">
+                    <div style="font-size: 36px; margin-bottom: 12px;">💬</div>
+                    <h3 style="color: #fff; font-size: 16px; font-weight: 700; margin-bottom: 8px;">Dedicated Support</h3>
+                    <p style="color: rgba(255,255,255,0.75); font-size: 14px; line-height: 1.6;">Our admissions team will guide you every step of the way.</p>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="enroll.html" style="display:inline-flex;align-items:center;gap:10px;background:#fff;color:#1e40af;padding:18px 44px;border-radius:14px;text-decoration:none;font-weight:800;font-size:18px;box-shadow:0 8px 30px rgba(0,0,0,0.2);transition:transform 0.2s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">📝 Start Enrollment Application</a>
+                <a href="contact.html" style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.15);color:#fff;padding:18px 32px;border-radius:14px;text-decoration:none;font-weight:600;font-size:16px;border:2px solid rgba(255,255,255,0.4);">💬 Contact Admissions Office</a>
             </div>
         </div>
     </section>

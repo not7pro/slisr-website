@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, push, onValue, remove, serverTimestamp, query, orderByChild } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, push, onValue, remove, serverTimestamp, query, orderByChild, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -24,4 +24,4 @@ window.addEventListener('unhandledrejection', function(event) {
     }
 });
 
-export { db, auth, ref, set, push, onValue, remove, serverTimestamp, query, orderByChild, signInWithEmailAndPassword, onAuthStateChanged, signOut };
+export { db, auth, ref, set, push, onValue, remove, serverTimestamp, query, orderByChild, runTransaction, signInWithEmailAndPassword, onAuthStateChanged, signOut };

@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'messages': { title: 'Contact Messages', sub: 'Manage and respond to school inquiries.' },
             'academics': { title: 'Academic Management', sub: 'Update curriculum, fees, and schedules.' },
             'news': { title: 'News & Events', sub: 'Post updates and announce upcoming school events.' },
-            'gallery': { title: 'Gallery Management', sub: 'Manage school photos and social media links.' }
+            'gallery': { title: 'Gallery Management', sub: 'Manage school photos and social media links.' },
+            'applications': { title: 'Applications Inbox', sub: 'Review and respond to student admission applications.' }
         };
 
         if (titles[section]) {
@@ -170,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (confirm('Mark this inquiry as handled and archive it?')) {
             try {
                 await remove(ref(db, 'messages/' + id));
+                await logActivity('Archived inquiry from a visitor.');
                 const viewer = document.getElementById('messageViewer');
                 if (viewer.innerHTML.includes(id)) {
                     viewer.innerHTML = '<div class="viewer-empty"><i class="fas fa-envelope-open"></i><p>Select a message to view details</p></div>';
@@ -181,12 +183,216 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    
+    // --- CMS: APPLICATIONS INBOX ---
+    let currentApps = [];
+    
+    function initApplicationsListener() {
+        const q = query(ref(db, 'applications'));
+        onValue(q, (snapshot) => {
+            const list = document.getElementById('appList');
+            if (!list) return;
+            
+            currentApps = [];
+            let html = '';
+            
+            if (!snapshot.exists()) {
+                list.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>No applications received yet.</p></div>';
+                const appBadge = document.getElementById('appBadge');
+                if(appBadge) appBadge.style.display = 'none';
+                return;
+            }
+
+            snapshot.forEach((doc) => {
+                const data = doc.val();
+                currentApps.push({ id: doc.key, ...data });
+            });
+
+            // Sort newest first
+            currentApps.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            currentApps.forEach(app => {
+                const isNew = app.status === 'new';
+                const time = app.timestamp ? new Date(app.timestamp).toLocaleDateString() : '';
+                html += `
+                    <div class="inbox-item ${isNew ? 'unread' : ''}" onclick="viewApplication('${app.id}')" id="app_${app.id}">
+                        <div class="item-header">
+                            <h4>${app.studentName}</h4>
+                            <span class="time">${time}</span>
+                        </div>
+                        <div class="item-subject">Grade: ${app.grade}</div>
+                        <div class="item-preview">Parent: ${app.parentName}</div>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+            
+            // Update badge
+            const newCount = currentApps.filter(a => a.status === 'new').length;
+            const appBadge = document.getElementById('appBadge');
+            if (appBadge) {
+                if (newCount > 0) {
+                    appBadge.textContent = newCount;
+                    appBadge.style.display = 'inline-flex';
+                } else {
+                    appBadge.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    window.viewApplication = function(docId) {
+        const app = currentApps.find(a => a.id === docId);
+        if (!app) return;
+        
+        // Mark as read in UI locally
+        const elem = document.getElementById('app_' + docId);
+        if (elem && elem.classList.contains('unread')) {
+            elem.classList.remove('unread');
+            // Update object to prevent badge resync issues before reload
+            app.status = 'read';
+            set(ref(db, 'applications/' + docId + '/status'), 'read');
+        }
+
+        const viewer = document.getElementById('appViewer');
+        const time = app.timestamp ? new Date(app.timestamp).toLocaleString() : 'Just now';
+        
+        // Highlight active item
+        document.querySelectorAll('#appList .inbox-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('onclick').includes(docId)) item.classList.add('active');
+        });
+
+        viewer.innerHTML = `
+            <div class="view-header">
+                <div class="user-info-large">
+                    <img src="https://ui-avatars.com/api/?name=${app.studentName}&background=random" class="avatar-large" alt="">
+                    <div class="user-meta">
+                        <h2>${app.studentName} ${app.grade ? '- ' + app.grade : ''}</h2>
+                        <p>Parent: ${app.parentName} &bull; ${app.email} &bull; ${app.phone}</p>
+                    </div>
+                </div>
+                <div class="view-actions" style="display: flex; gap: 10px; align-items: center;">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(app.email)}&su=Re:%20Admission%20Application%20for%20${encodeURIComponent(app.studentName)}&body=${encodeURIComponent('Dear ' + app.parentName + ',\n\nThank you for applying to Sri Lankan International School Riyadh.\n\n')}" target="_blank" class="reply-btn" style="text-decoration: none; padding: 8px 15px; font-size: 13px;"><i class="fas fa-reply"></i> Reply via Gmail</a>
+                    <button class="icon-btn-delete" title="Archive Application" onclick="deleteApplication('${app.id}')" style="background:#fee2e2; color:#ef4444; border:none; width:40px; height:40px; border-radius:8px; cursor:pointer;"><i class="fas fa-check"></i></button>
+                </div>
+            </div>
+            <div class="view-body" style="font-size: 16px; line-height: 1.8; color: #334155;">
+                <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="margin-bottom: 15px; color: #0f172a;">Application Details</h3>
+                    <p><strong>Applying Grade:</strong> ${app.grade}</p>
+                    <p><strong>Previous School:</strong> ${app.prevSchool || 'N/A'}</p>
+                    <p><strong>Submitted:</strong> ${time}</p>
+                </div>
+                <h4 style="margin-bottom: 10px; color: #0f172a;">Additional Notes / Medical Info:</h4>
+                <p style="white-space: pre-wrap; margin-left: 5px;">${app.notes || 'No additional notes provided.'}</p>
+            </div>
+        `;
+    };
+
+    window.deleteApplication = async function(id) {
+        if (confirm('Mark this application as processed and archive it?')) {
+            try {
+                await remove(ref(db, 'applications/' + id));
+                await logActivity('Processed and archived a student application.');
+                const viewer = document.getElementById('appViewer');
+                if (viewer.innerHTML.includes(id)) {
+                    viewer.innerHTML = '<div class="viewer-empty"><i class="fas fa-file-alt"></i><p>Select an application to review</p></div>';
+                }
+            } catch (error) {
+                console.error("Archive error", error);
+                alert("Failed to archive application.");
+            }
+        }
+    };
+    
+    initApplicationsListener();
+
     function updateStats() {
+        // New Inquiries - live from messages array
         const inquiryStat = document.querySelector('.stats-grid .stat-card:nth-child(2) .number');
-        if (inquiryStat) {
-            inquiryStat.textContent = currentMessages.length;
+        if (inquiryStat) inquiryStat.textContent = currentMessages.length;
+    }
+
+    // --- LIVE OVERVIEW STATS ---
+    function initLiveStats() {
+        // 1. Real Visitor Count from analytics.js atomic writes
+        onValue(ref(db, 'stats/total_visitors'), (snap) => {
+            const visitorEl = document.querySelector('.stats-grid .stat-card:nth-child(1) .number');
+            if (visitorEl) visitorEl.textContent = (snap.val() || 0).toLocaleString();
+        });
+
+        // 2. Active Events count from news node
+        onValue(ref(db, 'news'), (snap) => {
+            const eventsEl = document.querySelector('.stats-grid .stat-card:nth-child(3) .number');
+            if (eventsEl) eventsEl.textContent = snap.exists() ? snap.size : 0;
+        });
+
+        // 3. Applications badge on overview
+        onValue(ref(db, 'applications'), (snap) => {
+            const appBadge = document.getElementById('appBadge');
+            if (!appBadge) return;
+            const count = snap.exists() ? snap.size : 0;
+            if (count > 0) {
+                appBadge.textContent = count;
+                appBadge.style.display = 'inline-flex';
+            } else {
+                appBadge.style.display = 'none';
+            }
+        });
+
+        // 4. Live System Activity Log (last 5 events)
+        initActivityLog();
+    }
+
+    function initActivityLog() {
+        onValue(ref(db, 'logs'), (snap) => {
+            const timeline = document.querySelector('.activity-timeline');
+            if (!timeline) return;
+
+            if (!snap.exists()) {
+                timeline.innerHTML = '<div class="timeline-item"><span class="time">—</span><p>No activity recorded yet.</p></div>';
+                return;
+            }
+
+            const logs = [];
+            snap.forEach(child => logs.push(child.val()));
+            // Newest first, show last 8
+            logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            const recent = logs.slice(0, 8);
+
+            timeline.innerHTML = recent.map(log => {
+                const when = timeAgo(new Date(log.timestamp));
+                return `<div class="timeline-item">
+                    <span class="time">${when}</span>
+                    <p>${log.action}</p>
+                </div>`;
+            }).join('');
+        });
+    }
+
+    function timeAgo(date) {
+        const diff = Date.now() - date.getTime();
+        const mins = Math.floor(diff / 60000);
+        if (mins < 1) return 'Just now';
+        if (mins < 60) return mins + 'm ago';
+        const hrs = Math.floor(mins / 60);
+        if (hrs < 24) return hrs + 'h ago';
+        return Math.floor(hrs / 24) + 'd ago';
+    }
+
+    async function logActivity(action) {
+        try {
+            await push(ref(db, 'logs'), {
+                action,
+                timestamp: new Date().toISOString()
+            });
+        } catch (e) {
+            console.warn('Activity log write failed (non-critical):', e.message);
         }
     }
+    window.logActivity = logActivity;
 
     // --- CMS: ACADEMICS & FEES ---
     function initAcademicsListener() {
@@ -237,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 await Promise.all(promises);
                 alert('Success: Fee structure saved to database.');
+                logActivity('Updated the school tuition fee structure.');
             } catch (error) {
                 console.error("Save error", error);
                 alert('Error saving data.');
@@ -391,6 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initializations
     initMessageListener();
+    initLiveStats();
     initAcademicsListener();
     initNewsListener();
     initGalleryListener();

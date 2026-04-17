@@ -1,4 +1,4 @@
-import { db, ref, onValue, query, orderByChild } from './firebase-config.js';
+import { db, ref, onValue, query, orderByChild, push } from './firebase-config.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const feesContainer = document.getElementById('dynamicFeesCards');
@@ -53,4 +53,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     initFeesSync();
+
+    // --- Application Form Logic ---
+    const admissionsForm = document.getElementById('admissionsForm');
+    const successMsg = document.getElementById('formSuccessMessage');
+
+    if (admissionsForm) {
+        admissionsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = admissionsForm.querySelector('button[type="submit"]');
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+
+            const formData = {
+                parentName: document.getElementById('parentName').value,
+                studentName: document.getElementById('studentName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                grade: document.getElementById('studentGrade').value,
+                prevSchool: document.getElementById('prevSchool').value,
+                notes: document.getElementById('additionalNotes').value,
+                timestamp: new Date().toISOString(),
+                status: 'new'
+            };
+
+            try {
+                // Prevent silent hanging on connection failures
+                const pushPromise = push(ref(db, 'applications'), formData);
+                const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 7000));
+                
+                await Promise.race([pushPromise, timeoutPromise]);
+                
+                admissionsForm.reset();
+                admissionsForm.style.display = 'none';
+                successMsg.classList.remove('hidden');
+                
+                // Track system-level conversion
+                if (!sessionStorage.getItem('applied_slisr_rtdb')) {
+                    sessionStorage.setItem('applied_slisr_rtdb', 'true');
+                }
+            } catch (error) {
+                console.error("Submission failed:", error);
+                alert("Submission timed out. The school internet connection may be unavailable.");
+                btn.textContent = 'Submit Official Application';
+                btn.disabled = false;
+            }
+        });
+    }
 });

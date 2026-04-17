@@ -110,38 +110,56 @@
         </div>
     </section>
 
-    <!-- Inquiry / Apply Now Form -->
+    <!-- Student Admission Application Form -->
     <section class="inquiry-section">
         <div class="container">
-            <div class="inquiry-wrapper">
-                <div class="inquiry-text" data-aos="fade-right">
-                    <h2>Ready to Apply?</h2>
-                    <p>Have questions? Fill out this inquiry form, and our admissions team will get back to you shortly.</p>
+            <div class="inquiry-wrapper" style="max-width: 900px; margin: 0 auto; display: block;">
+                <div class="inquiry-text" data-aos="fade-up" style="text-align: center; margin-bottom: 40px; padding-right: 0;">
+                    <h2>Admission Application</h2>
+                    <p>Take the first step towards a brilliant future. Submit your formal application for enrollment below.</p>
                 </div>
-                <div class="inquiry-form-container" data-aos="fade-left">
-                    <form id="admissionsForm" class="admissions-form">
+                <div class="inquiry-form-container" data-aos="fade-up" data-aos-delay="100">
+                    <form id="admissionsForm" class="admissions-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                         <div class="form-group">
-                            <label for="parentName">Parent's Name</label>
+                            <label for="parentName">Parent/Guardian Name</label>
                             <input type="text" id="parentName" name="parentName" placeholder="Enter your full name" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            <label for="studentName">Student's Full Name</label>
+                            <input type="text" id="studentName" name="studentName" placeholder="Enter student's name" required>
                         </div>
                         <div class="form-group">
-                            <label for="studentGrade">Student's Applying Grade</label>
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="Enter parent's email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Enter contact number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentGrade">Applying Grade Level</label>
                             <select id="studentGrade" name="studentGrade" required>
                                 <option value="" disabled selected>Select Grade</option>
-                                <option value="kg">Kindergarten</option>
-                                <option value="primary">Primary (Grade 1-5)</option>
-                                <option value="middle">Middle School (Grade 6-8)</option>
-                                <option value="high">High School (Grade 9-12)</option>
+                                <option value="KG">Kindergarten</option>
+                                <option value="Primary (1-5)">Primary School (Grades 1-5)</option>
+                                <option value="Middle (6-8)">Middle School (Grades 6-8)</option>
+                                <option value="High (9-12)">High School (Grades 9-12)</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary submit-btn">Submit Inquiry</button>
+                        <div class="form-group">
+                            <label for="prevSchool">Previous School (Optional)</label>
+                            <input type="text" id="prevSchool" name="prevSchool" placeholder="Name of previous institution">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="additionalNotes">Additional Notes / Medical Info</label>
+                            <textarea id="additionalNotes" name="additionalNotes" rows="3" placeholder="Any specific requirements or questions?"></textarea>
+                        </div>
+                        <div style="grid-column: 1 / -1; text-align: center;">
+                            <button type="submit" class="btn btn-primary submit-btn" style="width: auto; padding: 15px 40px;">Submit Official Application</button>
+                        </div>
                     </form>
-                    <div id="formSuccessMessage" class="success-message hidden">
-                        <p>Thank you! Your inquiry has been submitted successfully.</p>
+                    <div id="formSuccessMessage" class="success-message hidden" style="text-align: center; margin-top: 20px;">
+                        <p><strong>Application Received!</strong><br>Our admissions office will contact you via email shortly.</p>
                     </div>
                 </div>
             </div>
@@ -225,6 +243,7 @@
         });
     </script>
     <script type="module" src="admissions.js"></script>
+    <script type="module" src="analytics.js"></script>
 </body>
 </html>
 

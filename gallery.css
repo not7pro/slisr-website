@@ -664,8 +664,8 @@ body {
 }
 
 .loader-logo {
-    width: 250px;
-    height: 250px;
+    width: 350px;
+    height: 350px;
     border-radius: 50%;
     object-fit: contain;
     background: #fff;
@@ -754,10 +754,10 @@ body {
 }
 
 .footer-brand .footer-logo {
-    height: 70px;
+    height: 120px;
     width: auto;
     margin-bottom: 16px;
-    filter: brightness(0) invert(1);
+
     opacity: 0.9;
 }
 

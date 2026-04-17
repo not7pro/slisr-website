@@ -626,7 +626,7 @@ body {
     padding: 40px;
     background: #fff;
     overflow-y: auto;
-    overflow-y: auto;`n}
+}
 
 .viewer-empty {
     margin: auto;
@@ -672,10 +672,11 @@ body {
 }
 
 .view-body {
-    flex: 1;
+    margin-bottom: 30px;
     font-size: 16px;
     line-height: 1.8;
     color: #334155;
+    overflow-y: auto;
 }
 
 .view-body h3 {

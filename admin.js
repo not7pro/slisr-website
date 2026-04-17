@@ -163,8 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>${msg.message}</p>
             </div>
             <div class="view-footer">
-                <button class="reply-btn"><i class="fas fa-reply"></i> Reply to Inquiry</button>
-                <button class="archive-btn"><i class="fas fa-check"></i> Mark as Handled</button>
+                <button class="reply-btn" onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(msg.email)}&su=Re:%20${encodeURIComponent(msg.subject)}&body=${encodeURIComponent('Hi ' + msg.firstName + ',\\n\\n')}', '_blank')"><i class="fas fa-reply"></i> Reply to Inquiry</button>
+                <button class="archive-btn" onclick="deleteMessage('${msg.id}')"><i class="fas fa-check"></i> Mark as Handled</button>
             </div>
         `;
     };

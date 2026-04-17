@@ -176,7 +176,26 @@
     </button>
 
     <script src="index.js"></script>
-    <script src="admissions.js"></script>
+    <script type="module" src="admissions.js"></script>
+    <script>
+        // Intersection observer to animate process steps into view
+        document.addEventListener('DOMContentLoaded', () => {
+            const steps = document.querySelectorAll('.process-step');
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, { threshold: 0.15 });
+                steps.forEach(step => observer.observe(step));
+            } else {
+                // Fallback for old browsers
+                steps.forEach(step => step.classList.add('visible'));
+            }
+        });
+    </script>
     <!-- Footer -->
     <footer class="site-footer">
         <div class="footer-grid">

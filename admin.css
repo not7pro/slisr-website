@@ -673,6 +673,7 @@ body {
 
 .view-body {
     flex: 1;
+    min-height: 0;
     overflow-y: auto;
     margin-bottom: 20px;
     padding-right: 15px;

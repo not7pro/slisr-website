@@ -169,6 +169,21 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     };
 
+    window.deleteMessage = async function(id) {
+        if (confirm('Mark this inquiry as handled and archive it?')) {
+            try {
+                await remove(ref(db, 'messages/' + id));
+                const viewer = document.getElementById('messageViewer');
+                if (viewer.innerHTML.includes(id)) {
+                    viewer.innerHTML = '<div class="viewer-empty"><i class="fas fa-envelope-open"></i><p>Select a message to view details</p></div>';
+                }
+            } catch (error) {
+                console.error("Archive error", error);
+                alert("Failed to archive message.");
+            }
+        }
+    };
+
     function updateStats() {
         const inquiryStat = document.querySelector('.stats-grid .stat-card:nth-child(2) .number');
         if (inquiryStat) {

@@ -37,22 +37,53 @@ document.addEventListener('DOMContentLoaded', () => {
                 count++;
             });
             feesContainer.innerHTML = html;
+            animateFeeCards();
+        });
+    }
+
+    function buildFeeCard(grade, tuition, admission, featured = false, delay = 0) {
+        return `
+            <div class="fee-card ${featured ? 'featured' : ''}" style="opacity:0;transform:scale(0.9);transition:all 0.5s ease ${delay}ms;">
+                ${featured ? '<div class="badge">Most Popular</div>' : ''}
+                <h3>${grade}</h3>
+                <div class="fee-amount">SAR ${tuition}<span>/year</span></div>
+                <ul class="fee-details">
+                    <li>Admission Fee: SAR ${admission}</li>
+                    <li>Annual Curriculum Fee</li>
+                    <li>Resource Access Included</li>
+                    <li>Pearson Edexcel Certified</li>
+                </ul>
+                <a href="enroll.html" style="display:block;margin-top:20px;background:#2563eb;color:#fff;padding:12px;border-radius:10px;text-decoration:none;font-weight:600;font-size:14px;text-align:center;">Apply Now →</a>
+            </div>`;
+    }
+
+    function animateFeeCards() {
+        document.querySelectorAll('#dynamicFeesCards .fee-card').forEach(card => {
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.style.opacity = '1';
+                        e.target.style.transform = e.target.classList.contains('featured') ? 'scale(1.05)' : 'scale(1)';
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            obs.observe(card);
         });
     }
 
     function renderFallbacks() {
-        // Just in case DB is empty, show original static info
-        feesContainer.innerHTML = `
-            <div class="fee-card featured" data-aos="zoom-in">
-                <div class="badge">Default View</div>
-                <h3>Standard Enrollment</h3>
-                <div class="fee-amount">Contact Us<span>/year</span></div>
-                <p>Please contact the admissions office for the latest fee schedule.</p>
-            </div>
-        `;
+        feesContainer.innerHTML =
+            buildFeeCard('Kindergarten (KG)',          '8,500',  '2,500', false, 0)  +
+            buildFeeCard('Primary School (Grades 1–5)','10,500', '3,000', true,  100) +
+            buildFeeCard('Middle School (Grades 6–8)', '12,000', '3,500', true,  200) +
+            buildFeeCard('O-Level (Grades 9–10)',      '14,500', '4,000', false, 300) +
+            buildFeeCard('A-Level (Grades 11–12)',     '17,000', '4,500', false, 400);
+        animateFeeCards();
     }
 
     initFeesSync();
+
 
     // --- Application Form Logic ---
     const admissionsForm = document.getElementById('admissionsForm');

@@ -154,17 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p>${msg.email} &bull; Received ${time}</p>
                     </div>
                 </div>
-                <div class="view-actions">
-                    <button class="icon-btn-delete" title="Delete Inquiry" onclick="deleteMessage('${msg.id}')"><i class="fas fa-trash"></i></button>
+                <div class="view-actions" style="display: flex; gap: 10px; align-items: center;">
+                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(msg.email)}&su=Re:%20${encodeURIComponent(msg.subject)}&body=${encodeURIComponent('Hi ' + msg.firstName + ',\\n\\n')}" target="_blank" class="reply-btn" style="text-decoration: none; padding: 8px 15px; font-size: 13px;"><i class="fas fa-reply"></i> Reply via Gmail</a>
+                    <button class="icon-btn-delete" title="Delete Inquiry" onclick="deleteMessage('${msg.id}')" style="background:#fee2e2; color:#ef4444; border:none; width:40px; height:40px; border-radius:8px; cursor:pointer;"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
             <div class="view-body">
                 <h3>Subject: ${msg.subject}</h3>
-                <p>${msg.message}</p>
-            </div>
-            <div class="view-footer">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(msg.email)}&su=Re:%20${encodeURIComponent(msg.subject)}&body=${encodeURIComponent('Hi ' + msg.firstName + ',\n\n')}" target="_blank" class="reply-btn" style="text-decoration: none;"><i class="fas fa-reply"></i> Reply to Inquiry</a>
-                <button class="archive-btn" onclick="deleteMessage('${msg.id}')"><i class="fas fa-check"></i> Mark as Handled</button>
+                <p style="white-space: pre-wrap;">${msg.message}</p>
             </div>
         `;
     };

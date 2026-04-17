@@ -625,7 +625,8 @@ body {
     flex-direction: column;
     padding: 40px;
     background: #fff;
-}
+    overflow-y: auto;
+    overflow-y: auto;`n}
 
 .viewer-empty {
     margin: auto;
@@ -711,3 +712,4 @@ body {
     font-weight: 600;
     cursor: pointer;
 }
+

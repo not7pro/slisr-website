@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="view-actions">
-                    <button class="archive-btn" onclick="deleteMessage('${msg.id}')"><i class="fas fa-trash"></i></button>
+                    <button class="icon-btn-delete" title="Delete Inquiry" onclick="deleteMessage('${msg.id}')"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
             <div class="view-body">

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         onValue(q, (snapshot) => {
             allNews = [];
             snapshot.forEach((doc) => {
-                allNews.push({ id: doc.id, ...doc.data() });
+                allNews.push({ id: doc.key, ...doc.val() });
             });
             renderNews('all');
         });
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let html = '';
         filtered.forEach(item => {
             const date = item.timestamp 
-                ? new Date(item.timestamp.seconds * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) 
+                ? new Date(item.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) 
                 : 'Recent';
             
             const tagClass = `tag-${item.category.toLowerCase()}`;

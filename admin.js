@@ -81,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 currentMessages.push({ id: childSnapshot.key, ...childSnapshot.val() });
             });
             currentMessages.reverse();
-            });
             renderMessages();
             updateStats();
         });
@@ -187,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
             let html = '';
             snapshot.forEach((doc) => {
                 const data = doc.val();
-                const data = doc.data();
                 html += `
                     <tr data-id="${doc.key}">
                         <td><input type="text" class="fee-grade" value="${data.grade}"></td>
@@ -314,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let html = '';
             snapshot.forEach((doc) => {
-                const data = doc.data();
+                const data = doc.val();
                 html += `
                     <div class="news-item-card">
                         <span class="badge blue">${data.category}</span>
@@ -338,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             let html = '';
             snapshot.forEach((doc) => {
-                const data = doc.data();
+                const data = doc.val();
                 html += `
                     <div class="gallery-item-card">
                         <img src="${data.url}" alt="">

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let html = '';
             let count = 0;
             snapshot.forEach((doc) => {
-                const data = doc.data();
+                const data = doc.val();
                 const delay = count * 100;
                 const isFeatured = data.grade.toLowerCase().includes('primary') || data.grade.toLowerCase().includes('middle');
                 

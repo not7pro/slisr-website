@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head><title>SLISR — Seed Fee Data</title>
+<style>body{font-family:monospace;padding:30px;background:#1e293b;color:#94a3b8;}
+h1{color:#38bdf8;margin-bottom:20px;}
+.log{background:#0f172a;padding:15px;border-radius:8px;line-height:2;}
+.ok{color:#34d399;} .err{color:#f87171;}</style>
+</head>
+<body>
+<h1>SLISR Fee Seeder</h1>
+<div class="log" id="log">Running...</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, push, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const config = {
+    apiKey: "AIzaSyCws78LEwQXJe_Ktd-UYNXj15S0hMMg7xQ",
+    authDomain: "slisr-official.firebaseapp.com",
+    databaseURL: "https://slisr-official-default-rtdb.firebaseio.com",
+    projectId: "slisr-official",
+    appId: "1:1000091265027:web:a85999d57d0576539a0636"
+};
+
+const app = initializeApp(config);
+const db = getDatabase(app);
+const log = document.getElementById('log');
+const add = (msg, cls='ok') => log.innerHTML += `<div class="${cls}">${msg}</div>`;
+
+const fees = [
+    { grade: 'Kindergarten (KG)',         admission: '2,500',  tuition: '8,500',  order: 0 },
+    { grade: 'Primary School (Grades 1–5)',admission: '3,000',  tuition: '10,500', order: 1 },
+    { grade: 'Middle School (Grades 6–8)', admission: '3,500',  tuition: '12,000', order: 2 },
+    { grade: 'O-Level (Grades 9–10)',      admission: '4,000',  tuition: '14,500', order: 3 },
+    { grade: 'A-Level (Grades 11–12)',     admission: '4,500',  tuition: '17,000', order: 4 },
+];
+
+try {
+    const snap = await get(ref(db, 'fees'));
+    if (snap.exists()) {
+        add('✓ Fees already exist in database — no action needed.', 'ok');
+    } else {
+        add('Seeding fees...', 'ok');
+        for (const fee of fees) {
+            await push(ref(db, 'fees'), fee);
+            add(`✓ Seeded: ${fee.grade}`);
+        }
+        add('✅ All done! You can now close this tab.', 'ok');
+    }
+} catch(e) {
+    add('✗ Error: ' + e.message, 'err');
+}
+</script>
+</body>
+</html>

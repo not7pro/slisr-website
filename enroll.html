@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll Now - Sri Lankan International School Riyadh</title>
+    <meta name="description" content="Submit your official student enrollment application for Sri Lankan International School Riyadh.">
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: #f1f5f9; min-height: 100vh; }
+
+        .enroll-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #1e293b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .enroll-card {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.25);
+            max-width: 860px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .enroll-header {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            padding: 40px 50px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .enroll-header img { width: 70px; height: 70px; object-fit: contain; }
+
+        .enroll-header-text h1 {
+            color: #fff;
+            font-size: 26px;
+            font-weight: 700;
+        }
+
+        .enroll-header-text p {
+            color: rgba(255,255,255,0.8);
+            font-size: 15px;
+            margin-top: 4px;
+        }
+
+        .enroll-body { padding: 40px 50px; }
+
+        .enroll-body h2 {
+            font-size: 20px;
+            color: #1e293b;
+            font-weight: 600;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            background: #f8fafc;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .submit-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .back-link {
+            color: #64748b;
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover { color: #2563eb; }
+
+        .submit-btn-large {
+            background: linear-gradient(135deg, #2563eb, #1e40af);
+            color: #fff;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn-large:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37,99,235,0.4);
+        }
+
+        .submit-btn-large:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .success-banner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-banner .check-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+            color: white;
+        }
+
+        .success-banner h2 { font-size: 28px; color: #1e293b; margin-bottom: 12px; }
+        .success-banner p { color: #64748b; font-size: 16px; line-height: 1.6; }
+
+        .required-star { color: #ef4444; margin-left: 2px; }
+
+        @media (max-width: 640px) {
+            .enroll-header { padding: 30px 24px; flex-direction: column; text-align: center; }
+            .enroll-body { padding: 30px 24px; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="enroll-page">
+        <div class="enroll-card">
+            <!-- Header -->
+            <div class="enroll-header">
+                <img src="school-logo.png" alt="SLISR Logo">
+                <div class="enroll-header-text">
+                    <h1>Student Enrollment Application</h1>
+                    <p>Sri Lankan International School Riyadh &bull; Pearson Edexcel Curriculum</p>
+                </div>
+            </div>
+
+            <!-- Form Body -->
+            <div class="enroll-body" id="formBody">
+
+                <!-- Section 1: Parent / Guardian -->
+                <h2><i class="fas fa-user-tie" style="color:#2563eb; margin-right:8px;"></i>Parent / Guardian Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Parent/Guardian Full Name <span class="required-star">*</span></label>
+                        <input type="text" id="parentName" placeholder="e.g. Arshad Perera" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Relationship to Student <span class="required-star">*</span></label>
+                        <select id="relationship" required>
+                            <option value="" disabled selected>Select</option>
+                            <option>Father</option>
+                            <option>Mother</option>
+                            <option>Guardian</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address <span class="required-star">*</span></label>
+                        <input type="email" id="email" placeholder="parent@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number <span class="required-star">*</span></label>
+                        <input type="tel" id="phone" placeholder="+966 5XX XXX XXXX" required>
+                    </div>
+                    <div class="form-group full">
+                        <label>Residential Address in Riyadh</label>
+                        <input type="text" id="address" placeholder="District / Compound name">
+                    </div>
+                </div>
+
+                <!-- Section 2: Student -->
+                <h2><i class="fas fa-user-graduate" style="color:#2563eb; margin-right:8px;"></i>Student Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Student's Full Name <span class="required-star">*</span></label>
+                        <input type="text" id="studentName" placeholder="Full name as in passport" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date of Birth <span class="required-star">*</span></label>
+                        <input type="date" id="dob" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Nationality</label>
+                        <input type="text" id="nationality" placeholder="e.g. Sri Lankan">
+                    </div>
+                    <div class="form-group">
+                        <label>Applying for Grade <span class="required-star">*</span></label>
+                        <select id="grade" required>
+                            <option value="" disabled selected>Select Grade</option>
+                            <option value="KG">Kindergarten</option>
+                            <option value="Grade 1">Grade 1</option>
+                            <option value="Grade 2">Grade 2</option>
+                            <option value="Grade 3">Grade 3</option>
+                            <option value="Grade 4">Grade 4</option>
+                            <option value="Grade 5">Grade 5</option>
+                            <option value="Grade 6">Grade 6</option>
+                            <option value="Grade 7">Grade 7</option>
+                            <option value="Grade 8">Grade 8</option>
+                            <option value="Grade 9">Grade 9</option>
+                            <option value="Grade 10 (O-Level)">Grade 10 (O-Level)</option>
+                            <option value="Grade 11 (A-Level)">Grade 11 (A-Level)</option>
+                            <option value="Grade 12 (A-Level)">Grade 12 (A-Level)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Previous School Name</label>
+                        <input type="text" id="prevSchool" placeholder="Name of last attended school">
+                    </div>
+                    <div class="form-group">
+                        <label>Academic Year Applying For</label>
+                        <select id="academicYear">
+                            <option value="2025-2026">2025 – 2026</option>
+                            <option value="2026-2027" selected>2026 – 2027</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>Medical Conditions / Special Requirements</label>
+                        <textarea id="notes" rows="3" placeholder="Any allergies, learning support needs, or medical conditions we should be aware of..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Submit -->
+                <div class="submit-row">
+                    <a href="admissions.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Admissions</a>
+                    <button class="submit-btn-large" id="submitBtn" onclick="submitApplication()">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Application
+                    </button>
+                </div>
+            </div>
+
+            <!-- Success State -->
+            <div class="success-banner" id="successBanner">
+                <div class="check-icon"><i class="fas fa-check"></i></div>
+                <h2>Application Submitted!</h2>
+                <p>Thank you for applying to Sri Lankan International School Riyadh.<br>
+                Our admissions team will review your application and contact you at <strong id="successEmail"></strong> within 3–5 working days.</p>
+                <br>
+                <a href="index.html" style="color:#2563eb; font-weight:600; text-decoration:none;">← Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db, ref, push } from './firebase-config.js';
+
+        window.submitApplication = async function() {
+            const btn = document.getElementById('submitBtn');
+
+            const fields = {
+                parentName: document.getElementById('parentName').value.trim(),
+                relationship: document.getElementById('relationship').value,
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                studentName: document.getElementById('studentName').value.trim(),
+                dob: document.getElementById('dob').value,
+                nationality: document.getElementById('nationality').value.trim(),
+                grade: document.getElementById('grade').value,
+                prevSchool: document.getElementById('prevSchool').value.trim(),
+                academicYear: document.getElementById('academicYear').value,
+                notes: document.getElementById('notes').value.trim(),
+                timestamp: new Date().toISOString(),
+                status: 'new'
+            };
+
+            // Basic validation
+            if (!fields.parentName || !fields.email || !fields.phone || !fields.studentName || !fields.dob || !fields.grade) {
+                alert('Please fill in all required fields (marked with ★).');
+                return;
+            }
+
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+
+            try {
+                const pushPromise = push(ref(db, 'applications'), fields);
+                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000));
+                await Promise.race([pushPromise, timeout]);
+
+                // Show success
+                document.getElementById('formBody').style.display = 'none';
+                document.getElementById('successEmail').textContent = fields.email;
+                document.getElementById('successBanner').style.display = 'block';
+
+            } catch (err) {
+                console.error('Submission error:', err);
+                alert('Submission failed. Please check your internet connection and try again.');
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Application';
+                btn.disabled = false;
+            }
+        };
+    </script>
+    <script type="module" src="analytics.js"></script>
+</body>
+</html>

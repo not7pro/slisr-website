@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getDatabase, ref, set, push, onValue, remove, serverTimestamp, query, orderByChild, runTransaction } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyCws78LEwQXJe_Ktd-UYNXj15S0hMMg7xQ",
@@ -15,6 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 window.addEventListener('unhandledrejection', function(event) {
     const msg = event.reason && event.reason.message ? event.reason.message.toLowerCase() : "";
@@ -24,4 +26,4 @@ window.addEventListener('unhandledrejection', function(event) {
     }
 });
 
-export { db, auth, ref, set, push, onValue, remove, serverTimestamp, query, orderByChild, runTransaction, signInWithEmailAndPassword, onAuthStateChanged, signOut };
+export { db, auth, storage, ref, set, push, onValue, remove, serverTimestamp, query, orderByChild, runTransaction, signInWithEmailAndPassword, onAuthStateChanged, signOut, sRef, uploadBytes, getDownloadURL, deleteObject };

@@ -1,4 +1,5 @@
 import { db, ref, set, push, remove, onValue, query, orderByChild, auth, signOut, serverTimestamp } from './firebase-config.js';
+// Removed storage imports due to plan restriction
 
 document.addEventListener('DOMContentLoaded', () => {
     const navItems = document.querySelectorAll('.nav-item');
@@ -646,23 +647,82 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const addPhotoBtn = document.getElementById('addPhotoBtn');
     const oneDriveBtn = document.getElementById('oneDriveBtn');
-    
+    const localUploadBtn = document.getElementById('localUploadBtn');
+    const galleryFileInput = document.getElementById('galleryFileInput');
+
+    if (localUploadBtn && galleryFileInput) {
+        localUploadBtn.onclick = () => galleryFileInput.click();
+    }
+
+    if (galleryFileInput) {
+        galleryFileInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+
+            localUploadBtn.disabled = true;
+            localUploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+            let count = 0;
+            for (const file of files) {
+                try {
+                    // Compress and convert to Base64
+                    const base64Data = await compressImage(file);
+                    await uploadPhotoUrl(base64Data, file.name);
+                    count++;
+                } catch (error) {
+                    console.error("Upload error for " + file.name, error);
+                    showToast("Error processing " + file.name, "error");
+                }
+            }
+
+            if (count > 0) showToast(`✅ Successfully added ${count} photos to gallery!`);
+            
+            localUploadBtn.disabled = false;
+            localUploadBtn.innerHTML = '<i class="fas fa-folder-open"></i> Upload from Computer';
+            galleryFileInput.value = ''; // Reset
+        });
+    }
+
+    // Utility: Compress image before saving to database (keeps DB small and fast)
+    async function compressImage(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 1200;
+                    const MAX_HEIGHT = 1200;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                    } else {
+                        if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Convert to high-quality compressed JPEG string
+                    resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                };
+            };
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
     // --- MICROSOFT ONEDRIVE CONFIGURATION ---
-    // User needs to provide their own Client ID from Azure Portal
-    const ONEDRIVE_CLIENT_ID = "YOUR_MICROSOFT_CLIENT_ID_HERE"; 
+    const ONEDRIVE_CLIENT_ID = "4107ef83-43e8-473e-b5b3-7d210aa0e6b0"; 
 
     if (oneDriveBtn) {
-        oneDriveBtn.onclick = () => {
-            if (ONEDRIVE_CLIENT_ID === "YOUR_MICROSOFT_CLIENT_ID_HERE") {
-                const id = prompt("Please enter your Microsoft Azure Client ID to enable OneDrive connectivity:");
-                if (!id) return;
-                alert("Client ID accepted for this session. (You should permanently update it in admin.js later)");
-                launchOneDrivePicker(id);
-            } else {
-                launchOneDrivePicker(ONEDRIVE_CLIENT_ID);
-            }
-        };
+        oneDriveBtn.onclick = () => launchOneDrivePicker(ONEDRIVE_CLIENT_ID);
     }
 
     function launchOneDrivePicker(clientId) {

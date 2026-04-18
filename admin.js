@@ -567,17 +567,29 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    window.deleteNews = async function(id) {
-        if (confirm('Permanently delete this post?')) {
-            try {
-                await remove(ref(db, 'news/' + id));
-            } catch (error) {
-                console.error("Delete error", error);
-            }
-        }
-    };
+    const newsGrid = document.getElementById('newsManagerGrid');
+    if (newsGrid) {
+        newsGrid.addEventListener('click', async (e) => {
+            const deleteBtn = e.target.closest('.btn-delete');
+            if (!deleteBtn) return;
 
-      function initNewsListener() {
+            const newsId = deleteBtn.getAttribute('data-id');
+            if (!newsId) return;
+
+            if (confirm('Permanently delete this news post?')) {
+                try {
+                    await remove(ref(db, 'news/' + newsId));
+                    showToast('✅ Post deleted successfully.');
+                    await logActivity('Deleted a news post.');
+                } catch (error) {
+                    console.error("Delete error", error);
+                    showToast('❌ Failed to delete post.', 'error');
+                }
+            }
+        });
+    }
+
+    function initNewsListener() {
         onValue(ref(db, 'news'), (snapshot) => {
             const grid = document.getElementById('newsManagerGrid');
             if (!grid) return;
@@ -605,14 +617,36 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h4 style="margin-bottom:6px;line-height:1.4;">${data.title}</h4>
                         <p style="font-size:13px;color:#64748b;line-height:1.5;">${preview}</p>
                         <div class="card-actions" style="margin-top:14px;">
-                            <button class="action-btn btn-delete" onclick="deleteNews('${data.id}')"><i class="fas fa-trash"></i> Delete</button>
+                            <button class="action-btn btn-delete" data-id="${data.id}"><i class="fas fa-trash"></i> Delete</button>
                         </div>
                     </div>
                 `;
             }).join('');
         });
     }
-     function initGalleryListener() {
+    const galleryGrid = document.getElementById('galleryManagerGrid');
+    if (galleryGrid) {
+        galleryGrid.addEventListener('click', async (e) => {
+            const deleteBtn = e.target.closest('.btn-delete');
+            if (!deleteBtn) return;
+
+            const photoId = deleteBtn.getAttribute('data-id');
+            if (!photoId) return;
+
+            if (confirm('Permanently delete this photo from the gallery?')) {
+                try {
+                    await remove(ref(db, 'gallery/' + photoId));
+                    showToast('✅ Photo deleted successfully.');
+                    await logActivity('Deleted a photo from the gallery.');
+                } catch (error) {
+                    console.error("Delete error", error);
+                    showToast('❌ Failed to delete photo. Check permissions.', 'error');
+                }
+            }
+        });
+    }
+
+    function initGalleryListener() {
         onValue(ref(db, 'gallery'), (snapshot) => {
             const grid = document.getElementById('galleryManagerGrid');
             if (!grid) return;
@@ -630,22 +664,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <img src="${data.url}" alt="${data.caption || ''}" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Found'">
                     <div class="gallery-item-info" style="display:flex;justify-content:space-between;align-items:center;">
                         <span style="font-size:12px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;">${data.caption || 'Photo'}</span>
-                        <button class="action-btn btn-delete" onclick="deletePhoto('${data.id}')"><i class="fas fa-trash"></i></button>
+                        <button class="action-btn btn-delete" data-id="${data.id}"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
         });
     }
-
-    window.deletePhoto = async function(id) {
-        if (confirm('Permanently delete this photo?')) {
-            try {
-                await remove(ref(db, 'gallery/' + id));
-            } catch (error) {
-                console.error("Delete error", error);
-            }
-        }
-    };
 
     const addPhotoBtn = document.getElementById('addPhotoBtn');
     const oneDriveBtn = document.getElementById('oneDriveBtn');

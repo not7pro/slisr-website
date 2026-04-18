@@ -173,12 +173,13 @@ body {
 }
 
 .hero-description {
-    font-size: 18px;
-    color: #fff;
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.95);
     font-weight: 400;
     line-height: 1.6;
-    margin-bottom: 35px;
-    max-width: 650px;
+    margin-bottom: 40px;
+    max-width: 700px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     animation: fadeInUp 1s ease;
 }
 
@@ -237,16 +238,45 @@ body {
 }
 
 .btn-secondary {
-    background: transparent;
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
     color: #fff;
-    border: 2px solid #fff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.2);
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: #fff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Scroll Indicator Button */
+.scroll-indicator {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    animation: bounce 2s infinite;
+}
+
+.scroll-indicator:hover {
+    opacity: 1;
+    color: #2563eb;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+    40% { transform: translateX(-50%) translateY(-10px); }
+    60% { transform: translateX(-50%) translateY(-5px); }
 }
 
 .btn-secondary:active {
@@ -488,18 +518,15 @@ body {
 
     .mobile-menu-btn {
         display: flex;
+        z-index: 1001;
     }
 
     .enroll-btn {
         display: none;
     }
 
-    .logo-img {
-        height: 70px;
-    }
-
     .hero-title {
-        font-size: 32px;
+        font-size: 36px;
     }
 
     .hero-description {
@@ -508,21 +535,12 @@ body {
 
     .hero-buttons {
         flex-direction: column;
-        gap: 15px;
+        width: 100%;
     }
 
     .btn {
         width: 100%;
-        justify-content: center;
-    }
-
-    .info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-section {
-        padding: 60px 20px;
-        min-height: auto;
+        text-align: center;
     }
 }
 

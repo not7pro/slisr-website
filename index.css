@@ -115,14 +115,17 @@ body {
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(135deg, #3b5998 0%, #4c6bb5 25%, #5d7fd1 50%, #7195e8 75%, #8ab4f8 100%);
-    min-height: 500px;
+    background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.4)), url('hero-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Creates a premium parallax feel */
+    min-height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     overflow: hidden;
-    padding: 80px 20px;
+    padding: 100px 20px;
 }
 
 .hero-section::before {
@@ -133,31 +136,39 @@ body {
     right: 0;
     bottom: 0;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    opacity: 0.5;
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.3;
 }
 
 .hero-overlay {
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .hero-content {
     text-align: left;
     color: #fff;
+    animation: fadeInSlideUp 1s ease-out;
+}
+
+@keyframes fadeInSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .hero-title {
-    font-size: 48px;
-    font-weight: 700;
+    font-size: 56px;
+    font-weight: 800;
     color: #fff;
-    margin-bottom: 20px;
-    line-height: 1.2;
+    margin-bottom: 24px;
+    line-height: 1.1;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
     animation: fadeInUp 0.8s ease;
 }
 

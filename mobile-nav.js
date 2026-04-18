@@ -1,7 +1,3 @@
-/**
- * mobile-nav.js  — shared hamburger menu for all public pages
- * Handles: open/close, outside-click dismiss, active link highlight
- */
 (function () {
     document.addEventListener('DOMContentLoaded', function () {
         const toggle = document.querySelector('.mobile-menu-btn');
@@ -10,56 +6,55 @@
 
         if (!toggle || !navLinks) return;
 
-        // ── Toggle open/close ───────────────────────────────────
-        toggle.addEventListener('click', function (e) {
-            e.stopPropagation();
-            navLinks.classList.toggle('active');
-
-            // Animate hamburger → X
+        function toggleMenu(forceClose = false) {
             const spans = toggle.querySelectorAll('span');
-            const isOpen = navLinks.classList.contains('active');
-            if (spans.length >= 3) {
-                spans[0].style.transform = isOpen ? 'rotate(45deg) translate(5px, 6px)' : '';
-                spans[1].style.opacity  = isOpen ? '0' : '1';
-                spans[2].style.transform = isOpen ? 'rotate(-45deg) translate(5px, -6px)' : '';
-            }
-        });
+            const isActive = forceClose ? false : !navLinks.classList.contains('active');
 
-        // ── Close on outside click ──────────────────────────────
-        document.addEventListener('click', function (e) {
-            if (!navbar || navbar.contains(e.target)) return;
-            navLinks.classList.remove('active');
-            resetHamburger();
-        });
-
-        // ── Close when a link is clicked ────────────────────────
-        navLinks.querySelectorAll('a').forEach(function (link) {
-            link.addEventListener('click', function () {
+            if (isActive) {
+                navLinks.classList.add('active');
+                if (spans.length >= 3) {
+                    spans[0].style.transform = 'rotate(45deg) translate(5px, 6px)';
+                    spans[1].style.opacity = '0';
+                    spans[2].style.transform = 'rotate(-45deg) translate(5px, -6px)';
+                }
+            } else {
                 navLinks.classList.remove('active');
-                resetHamburger();
-            });
-        });
-
-        // ── Escape key ──────────────────────────────────────────
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                navLinks.classList.remove('active');
-                resetHamburger();
+                if (spans.length >= 3) {
+                    spans[0].style.transform = '';
+                    spans[1].style.opacity = '1';
+                    spans[2].style.transform = '';
+                }
             }
-        });
-
-        function resetHamburger() {
-            const spans = toggle.querySelectorAll('span');
-            spans.forEach(function (s) {
-                s.style.transform = '';
-                s.style.opacity  = '1';
-            });
         }
 
-        // ── Mark active link ────────────────────────────────────
-        var current = window.location.pathname.split('/').pop() || 'index.html';
-        navLinks.querySelectorAll('a').forEach(function (link) {
-            var href = (link.getAttribute('href') || '').split('/').pop();
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+            if (navLinks.classList.contains('active') && !navbar.contains(e.target)) {
+                toggleMenu(true);
+            }
+        });
+
+        // Close when a link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => toggleMenu(true));
+        });
+
+        // Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                toggleMenu(true);
+            }
+        });
+
+        // Active link highlighting
+        const current = window.location.pathname.split('/').pop() || 'index.html';
+        navLinks.querySelectorAll('a').forEach(link => {
+            const href = (link.getAttribute('href') || '').split('/').pop();
             if (href === current) link.classList.add('active');
         });
     });

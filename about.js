@@ -1,36 +1,11 @@
 // About Page JavaScript
 document.addEventListener('DOMContentLoaded', function () {
-    initializeMobileMenu();
+    initializeScrollAnimations();
     initializeScrollAnimations();
     initializeTimeline();
     initializeCounterStats();
     console.log('About page initialized successfully! 🏫');
 });
-
-// ===== Mobile Menu =====
-function initializeMobileMenu() {
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
-
-    if (mobileMenuBtn && navLinks) {
-        mobileMenuBtn.addEventListener('click', function () {
-            navLinks.classList.toggle('active');
-            this.classList.toggle('active');
-
-            // Animate hamburger icon
-            const spans = this.querySelectorAll('span');
-            if (this.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(8px, 8px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
-            } else {
-                spans[0].style.transform = '';
-                spans[1].style.opacity = '';
-                spans[2].style.transform = '';
-            }
-        });
-    }
-}
 
 // ===== Scroll Animations (General) =====
 function initializeScrollAnimations() {

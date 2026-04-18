@@ -21,15 +21,13 @@ const lightbox = document.getElementById('lightbox');
 const lightboxImg = document.getElementById('lightbox-img');
 const lightboxCaption = document.getElementById('lightbox-caption');
 const closeLightbox = document.querySelector('.close-lightbox');
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const navLinks = document.querySelector('.nav-links');
+const closeLightbox = document.querySelector('.close-lightbox');
 
 // ===== Initialize on DOM Load =====
 document.addEventListener('DOMContentLoaded', function () {
     initializeSocialLinks();
     initializeGalleryFilters();
     initializeLightbox();
-    initializeMobileMenu();
     addCardClickEffects();
     addScrollAnimations();
     console.log('Gallery page initialized successfully! 🎓');
@@ -221,28 +219,6 @@ function closeLightboxModal() {
 
 function showPlaceholderMessage(caption) {
     alert(`This is a placeholder for: ${caption}\n\nReplace gallery placeholders with actual images by updating the HTML.`);
-}
-
-// ===== Mobile Menu Functions =====
-function initializeMobileMenu() {
-    if (mobileMenuBtn && navLinks) {
-        mobileMenuBtn.addEventListener('click', function () {
-            navLinks.classList.toggle('active');
-            this.classList.toggle('active');
-
-            // Animate hamburger icon
-            const spans = this.querySelectorAll('span');
-            if (this.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(8px, 8px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
-            } else {
-                spans[0].style.transform = '';
-                spans[1].style.opacity = '';
-                spans[2].style.transform = '';
-            }
-        });
-    }
 }
 
 // ===== Scroll Animations =====

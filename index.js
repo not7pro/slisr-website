@@ -7,14 +7,11 @@ const applyNowBtn = document.getElementById('applyNowBtn');
 const enrollBtn = document.querySelector('.enroll-btn');
 const infoCards = document.querySelectorAll('.info-card');
 const infoLinks = document.querySelectorAll('.info-link');
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const navLinks = document.querySelector('.nav-links');
 const accessibilityBtn = document.querySelector('.accessibility-btn');
 
 // ===== Initialize on DOM Load =====
 document.addEventListener('DOMContentLoaded', function () {
     initializeButtons();
-    initializeMobileMenu();
     initializeScrollAnimations();
     initializeCardHoverEffects();
     initializeAccessibility();
@@ -94,28 +91,6 @@ function addClickAnimation(button) {
     setTimeout(() => {
         button.style.transform = '';
     }, 150);
-}
-
-// ===== Mobile Menu =====
-function initializeMobileMenu() {
-    if (mobileMenuBtn && navLinks) {
-        mobileMenuBtn.addEventListener('click', function () {
-            navLinks.classList.toggle('active');
-            this.classList.toggle('active');
-
-            // Animate hamburger icon
-            const spans = this.querySelectorAll('span');
-            if (this.classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(8px, 8px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
-            } else {
-                spans[0].style.transform = '';
-                spans[1].style.opacity = '';
-                spans[2].style.transform = '';
-            }
-        });
-    }
 }
 
 // ===== Scroll Animations =====

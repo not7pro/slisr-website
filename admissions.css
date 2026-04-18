@@ -321,3 +321,132 @@
         font-size: 28px;
     }
 }
+
+/* Ready CTA Section */
+.ready-cta-section {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.cta-container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.cta-title {
+    color: #fff;
+    font-size: 38px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+.cta-description {
+    color: rgba(255,255,255,0.85);
+    font-size: 18px;
+    max-width: 650px;
+    margin: 0 auto 50px;
+    line-height: 1.7;
+}
+
+.cta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 50px;
+}
+
+.cta-card {
+    background: rgba(255, 255, 255, 0.1);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 32px 24px;
+    transition: transform 0.3s ease;
+}
+
+.cta-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.cta-icon {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.cta-card h3 {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.cta-card p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    color: #1e40af;
+    padding: 16px 40px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 18px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.btn-cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+}
+
+.btn-cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 16px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+/* Admissions Tablet/Mobile Overrides */
+@media (max-width: 768px) {
+    .cta-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ready-cta-section {
+        padding: 60px 16px;
+    }
+    
+    .cta-title {
+        font-size: 30px;
+    }
+    
+    .btn-cta-primary, .btn-cta-secondary {
+        width: 100%;
+        justify-content: center;
+    }
+}

@@ -486,34 +486,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeNewsBtn = document.getElementById('closeNewsModal');
     const newsForm = document.getElementById('newsForm');
 
-    if (openNewsBtn) openNewsBtn.onclick = () => newsModal.style.display = 'block';
+    if (openNewsBtn) openNewsBtn.onclick = () => newsModal.style.display = 'flex';
     if (closeNewsBtn) closeNewsBtn.onclick = () => newsModal.style.display = 'none';
+
+    const cancelNewsBtn = document.getElementById('cancelNewsBtn');
+    if (cancelNewsBtn) cancelNewsBtn.onclick = () => newsModal.style.display = 'none';
+
+    // Close on backdrop click
+    newsModal.addEventListener('click', (e) => {
+        if (e.target === newsModal) newsModal.style.display = 'none';
+    });
 
     if (newsForm) {
         newsForm.onsubmit = async (e) => {
             e.preventDefault();
-            const btn = newsForm.querySelector('button');
+            const btn = newsForm.querySelector('button[type="submit"]');
             btn.disabled = true;
-            btn.textContent = 'Publishing...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publishing...';
 
             const data = {
-                title: document.getElementById('newsTitle').value,
+                title: document.getElementById('newsTitle').value.trim(),
                 category: document.getElementById('newsCategory').value,
-                description: document.getElementById('newsDesc').value,
-                timestamp: serverTimestamp()
+                description: document.getElementById('newsDesc').value.trim(),
+                image: document.getElementById('newsImage').value.trim() || null,
+                eventDate: document.getElementById('newsDate').value || null,
+                timestamp: serverTimestamp(),
+                publishedAt: new Date().toISOString()
             };
 
             try {
                 await push(ref(db, 'news'), data);
+                await logActivity(`Published news post: "${data.title}"`);
                 newsForm.reset();
                 newsModal.style.display = 'none';
-                alert('Post published successfully!');
+                // Show toast instead of alert
+                showToast('✅ Post published! It is now live on the website.');
             } catch (error) {
-                console.error("News error", error);
-                alert('Error publishing post.');
+                console.error('News error', error);
+                showToast('❌ Error publishing post. Check your connection.', 'error');
             }
             btn.disabled = false;
-            btn.textContent = 'Publish Post';
+            btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Post';
         };
     }
 
@@ -527,49 +540,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    function initNewsListener() {
+      function initNewsListener() {
         onValue(ref(db, 'news'), (snapshot) => {
-
             const grid = document.getElementById('newsManagerGrid');
             if (!grid) return;
-            
-            let html = '';
-            snapshot.forEach((doc) => {
-                const data = doc.val();
-                html += `
+
+            if (!snapshot.exists()) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-newspaper"></i><p>No posts published yet. Click "New Post" to get started.</p></div>';
+                return;
+            }
+
+            const items = [];
+            snapshot.forEach(doc => items.push({ id: doc.key, ...doc.val() }));
+            items.sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0));
+
+            grid.innerHTML = items.map(data => {
+                const date = data.publishedAt ? new Date(data.publishedAt).toLocaleDateString('en-US', { day:'numeric', month:'short', year:'numeric' }) : 'Recent';
+                const preview = (data.description || '').substring(0, 90) + ((data.description || '').length > 90 ? '…' : '');
+                const imgHtml = data.image ? `<img src="${data.image}" alt="" style="width:100%;height:130px;object-fit:cover;border-radius:10px;margin-bottom:12px;">` : '';
+                return `
                     <div class="news-item-card">
-                        <span class="badge blue">${data.category}</span>
-                        <h4>${data.title}</h4>
-                        <p>${data.description.substring(0, 100)}...</p>
-                        <div class="card-actions">
-                            <button class="action-btn btn-delete" onclick="deleteNews('${doc.key}')">Delete</button>
+                        ${imgHtml}
+                        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                            <span class="badge blue" style="margin:0;">${data.category}</span>
+                            <span style="font-size:11px;color:#94a3b8;margin-left:auto;">${date}</span>
+                        </div>
+                        <h4 style="margin-bottom:6px;line-height:1.4;">${data.title}</h4>
+                        <p style="font-size:13px;color:#64748b;line-height:1.5;">${preview}</p>
+                        <div class="card-actions" style="margin-top:14px;">
+                            <button class="action-btn btn-delete" onclick="deleteNews('${data.id}')"><i class="fas fa-trash"></i> Delete</button>
                         </div>
                     </div>
                 `;
-            });
-            grid.innerHTML = html;
+            }).join('');
         });
     }
-
-    function initGalleryListener() {
+     function initGalleryListener() {
         onValue(ref(db, 'gallery'), (snapshot) => {
-
             const grid = document.getElementById('galleryManagerGrid');
             if (!grid) return;
-            
-            let html = '';
-            snapshot.forEach((doc) => {
-                const data = doc.val();
-                html += `
-                    <div class="gallery-item-card">
-                        <img src="${data.url}" alt="">
-                        <div class="gallery-item-info">
-                            <button class="action-btn btn-delete" onclick="deletePhoto('${doc.key}')">Delete</button>
-                        </div>
+
+            if (!snapshot.exists()) {
+                grid.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><p>No photos yet. Click "Add Photo" to upload.</p></div>';
+                return;
+            }
+
+            const items = [];
+            snapshot.forEach(doc => items.push({ id: doc.key, ...doc.val() }));
+
+            grid.innerHTML = items.map(data => `
+                <div class="gallery-item-card">
+                    <img src="${data.url}" alt="${data.caption || ''}" onerror="this.src='https://via.placeholder.com/300x200?text=Image+Not+Found'">
+                    <div class="gallery-item-info" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="font-size:12px;color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;">${data.caption || 'Photo'}</span>
+                        <button class="action-btn btn-delete" onclick="deletePhoto('${data.id}')"><i class="fas fa-trash"></i></button>
                     </div>
-                `;
-            });
-            grid.innerHTML = html;
+                </div>
+            `).join('');
         });
     }
 
@@ -630,6 +657,36 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Failed to add photo. Make sure Firebase is connected.');
         }
     }
+
+    // ——— TOAST NOTIFICATION ———
+    function showToast(message, type = 'success') {
+        const existing = document.getElementById('adminToast');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.id = 'adminToast';
+        toast.style.cssText = `
+            position: fixed; bottom: 30px; right: 30px; z-index: 99999;
+            background: ${type === 'error' ? '#ef4444' : '#10b981'};
+            color: #fff; padding: 14px 22px; border-radius: 12px;
+            font-weight: 600; font-size: 14px; font-family: Inter, sans-serif;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: slideToast 0.4s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+            max-width: 360px; display: flex; align-items: center; gap: 10px;
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        if (!document.getElementById('toastStyle')) {
+            const style = document.createElement('style');
+            style.id = 'toastStyle';
+            style.textContent = `@keyframes slideToast { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }`;
+            document.head.appendChild(style);
+        }
+
+        setTimeout(() => toast.remove(), 4000);
+    }
+    window.showToast = showToast;
 
     // Initializations
     initMessageListener();

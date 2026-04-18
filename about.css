@@ -39,7 +39,7 @@ body {
 }
 
 .logo-img {
-    height: 140px;
+    height: 70px;
     width: auto;
     transition: transform 0.3s ease;
 }
@@ -527,7 +527,7 @@ section {
     }
 
     .logo-img {
-        height: 100px;
+        height: 70px;
     }
 
     .hero-title {
@@ -671,7 +671,7 @@ section {
 }
 
 .footer-brand .footer-logo {
-    height: 120px;
+    height: 80px;
     width: auto;
     margin-bottom: 16px;
 

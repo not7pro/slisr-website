@@ -482,6 +482,11 @@ body {
 }
 
 @media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr; /* Force stacking on tablet/phone */
+        gap: 24px;
+    }
+
     .nav-links {
         display: none;
         position: absolute;
@@ -507,10 +512,6 @@ body {
         width: 100%;
     }
 
-    .nav-links .dropdown {
-        width: 100%;
-    }
-
     .nav-wrapper {
         position: relative;
         flex-wrap: wrap;
@@ -525,51 +526,50 @@ body {
         display: none;
     }
 
+    .hero-section {
+        min-height: auto;
+        padding: 100px 20px 80px;
+        background-attachment: scroll; /* Prevents jank on mobile */
+    }
+
     .hero-title {
-        font-size: 36px;
+        font-size: 32px;
+        line-height: 1.2;
     }
 
     .hero-description {
         font-size: 16px;
+        margin-bottom: 30px;
     }
 
     .hero-buttons {
         flex-direction: column;
         width: 100%;
+        gap: 15px;
     }
 
     .btn {
         width: 100%;
         text-align: center;
+        padding: 12px 24px;
+    }
+
+    .scroll-indicator {
+        display: none; /* Hide scroll arrow on small screens to save space */
     }
 }
 
 @media (max-width: 480px) {
     .hero-section {
-        padding: 40px 20px;
+        padding: 80px 16px 60px;
     }
 
     .hero-title {
         font-size: 28px;
     }
 
-    .info-card-header {
-        padding: 20px 25px;
-    }
-
-    .info-card-header h2 {
-        font-size: 20px;
-    }
-
-    .info-list {
-        padding: 15px 25px 25px;
-    }
-
-    .accessibility-btn {
-        bottom: 20px;
-        left: 20px;
-        width: 45px;
-        height: 45px;
+    .section-title {
+        font-size: 24px;
     }
 }
 

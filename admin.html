@@ -23,7 +23,10 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <img src="school-logo.png" alt="SLISR Logo" class="sidebar-logo">
-                <span class="brand-text">Admin Panel</span>
+                <div>
+                    <span class="brand-text">SLISR Admin</span>
+                    <span class="brand-sub">Management Portal</span>
+                </div>
             </div>
             <nav class="sidebar-nav">
                 <a href="#" class="nav-item active" data-section="overview">
@@ -53,12 +56,13 @@
                     <i class="fas fa-images"></i>
                     <span>Gallery</span>
                 </a>
-                <div class="nav-divider"></div>
-                <a href="#" class="nav-item" id="logoutBtn">
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#" class="nav-item" id="logoutBtn" style="margin-bottom:0;">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
-            </nav>
+            </div>
         </aside>
 
         <!-- Main Content -->
@@ -213,7 +217,9 @@
                         </table>
                     </div>
                     <div class="card-footer">
-                        <button class="save-btn" id="saveFeesBtn">Save Changes</button>
+                        <button class="save-btn" id="saveFeesBtn">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
                     </div>
                 </div>
             </div>
@@ -239,8 +245,10 @@
                     <div class="card-header">
                         <h2>Gallery Management</h2>
                         <button class="action-btn-primary" id="addPhotoBtn">
-                            <i class="fas fa-plus"></i> Add Photo
+                            <i class="fas fa-upload"></i> Add Photo
                         </button>
+                        <!-- Hidden file input for local images -->
+                        <input type="file" id="galleryFileInput" accept="image/*" style="display:none;" multiple>
                     </div>
                     <div class="gallery-manager-grid" id="galleryManagerGrid">
                         <!-- Loaded from Firestore -->

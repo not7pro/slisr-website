@@ -584,20 +584,51 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const addPhotoBtn = document.getElementById('addPhotoBtn');
+    const galleryFileInput = document.getElementById('galleryFileInput');
+
     if (addPhotoBtn) {
-        addPhotoBtn.onclick = async () => {
-            const url = prompt('Enter image URL or local filename (e.g. event.jpg):');
-            if (url) {
-                try {
-                    await push(ref(db, 'gallery'), {
-                        url: url,
-                        timestamp: serverTimestamp()
-                    });
-                } catch (error) {
-                    console.error("Add photo error", error);
-                }
+        addPhotoBtn.onclick = () => {
+            // Open the file explorer dialog
+            if (galleryFileInput) {
+                galleryFileInput.click();
+            } else {
+                // Fallback: ask for URL
+                const url = prompt('Enter image URL:');
+                if (url) uploadPhotoUrl(url);
             }
         };
+    }
+
+    if (galleryFileInput) {
+        galleryFileInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (!files.length) return;
+
+            for (const file of files) {
+                // Since we can't upload to Firebase Storage without extra setup,
+                // we store the file name as the URL so it works with local images
+                // in the same directory, or we create an object URL as a preview.
+                const localUrl = file.name; // store just filename — must be in website folder
+                await uploadPhotoUrl(localUrl, file.name);
+            }
+
+            // Reset input so same files can be selected again
+            galleryFileInput.value = '';
+        });
+    }
+
+    async function uploadPhotoUrl(url, caption = '') {
+        try {
+            await push(ref(db, 'gallery'), {
+                url: url,
+                caption: caption,
+                timestamp: serverTimestamp()
+            });
+            await logActivity('Added a new photo to the gallery.');
+        } catch (error) {
+            console.error('Add photo error', error);
+            alert('Failed to add photo. Make sure Firebase is connected.');
+        }
     }
 
     // Initializations

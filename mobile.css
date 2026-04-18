@@ -16,6 +16,15 @@ img, video, iframe { max-width: 100%; height: auto; }
     padding-right: 16px;
 }
 
+/* Home Page Specific Mobile Fixes */
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        display: grid !important;
+    }
+}
+
 /* =====================================================
    NAVBAR  (all pages share this structure)
    ===================================================== */

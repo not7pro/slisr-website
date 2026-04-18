@@ -57,6 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const initializedSections = new Set();
+
     window.switchSection = function(sectionId) {
         // Update Nav
         navItems.forEach(i => {
@@ -72,10 +74,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target) {
             target.classList.add('active');
         } else {
+            sectionId = 'overview'; // normalization
             document.getElementById('overviewSection').classList.add('active');
         }
 
         updateHeader(sectionId);
+
+        // --- LAZY LOADING DATA ---
+        // Only fetch data from Firebase when the user actually visits the section
+        if (!initializedSections.has(sectionId)) {
+            switch(sectionId) {
+                case 'overview':
+                    initLiveStats();
+                    break;
+                case 'messages':
+                    initMessageListener();
+                    break;
+                case 'academics':
+                    initAcademicsListener();
+                    break;
+                case 'news':
+                    initNewsListener();
+                    break;
+                case 'gallery':
+                    initGalleryListener();
+                    break;
+                case 'applications':
+                    if (typeof initApplicationsListener === 'function') initApplicationsListener();
+                    break;
+            }
+            initializedSections.add(sectionId);
+            console.log(`[Admin] Initialized data for section: ${sectionId}`);
+        }
     };
 
     function updateHeader(section) {
@@ -719,8 +749,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.src = event.target.result;
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1200;
-                    const MAX_HEIGHT = 1200;
+                    const MAX_WIDTH = 1000;
+                    const MAX_HEIGHT = 1000;
                     let width = img.width;
                     let height = img.height;
 
@@ -734,8 +764,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Convert to high-quality compressed JPEG string
-                    resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                    // Convert to optimized compressed JPEG string (0.5 quality for better speed)
+                    resolve(canvas.toDataURL('image/jpeg', 0.5)); 
                 };
             };
             reader.onerror = (error) => reject(error);
@@ -846,10 +876,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.showToast = showToast;
 
-    // Initializations
-    initMessageListener();
-    initLiveStats();
-    initAcademicsListener();
-    initNewsListener();
-    initGalleryListener();
+    // Initializations - ONLY load essential stats on page load
+    switchSection('overview');
 });

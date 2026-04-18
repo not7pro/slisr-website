@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Premium fallback images for professional presentation if DB is empty
     const fallbackImages = [
-        { url: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1200&auto=format&fit=crop", caption: "Main Campus Building" },
-        { url: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1200&auto=format&fit=crop", caption: "Chemistry Laboratory" },
-        { url: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=1200&auto=format&fit=crop", caption: "School Library" },
-        { url: "https://images.unsplash.com/photo-1577894778596-3a7294702f85?q=80&w=1200&auto=format&fit=crop", caption: "Sports Day" },
-        { url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1200&auto=format&fit=crop", caption: "Art Class" },
+        { url: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=800&auto=format&fit=crop", caption: "Main Campus Building" },
+        { url: "https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=800&auto=format&fit=crop", caption: "Chemistry Laboratory" },
+        { url: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop", caption: "School Library" },
+        { url: "https://images.unsplash.com/photo-1577894778596-3a7294702f85?q=80&w=800&auto=format&fit=crop", caption: "Sports Day" },
+        { url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop", caption: "Art Class" },
         { url: "https://images.unsplash.com/photo-1588072432836-e10032774350?q=80&w=1200&auto=format&fit=crop", caption: "Primary Education" }
     ];
 

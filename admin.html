@@ -220,7 +220,17 @@
 
             <!-- News Section -->
             <div id="newsSection" class="dashboard-section">
-                <!-- ... existing news news section ... -->
+                <div class="cms-card">
+                    <div class="card-header">
+                        <h2>Manage News & Events</h2>
+                        <button class="action-btn-primary" onclick="document.getElementById('newsModal').style.display='block'">
+                            <i class="fas fa-plus"></i> New Post
+                        </button>
+                    </div>
+                    <div class="news-grid" id="newsManagerGrid">
+                        <!-- Loaded from Firestore -->
+                    </div>
+                </div>
             </div>
 
             <!-- Gallery Section -->

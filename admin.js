@@ -454,17 +454,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.addFeeRow = function() {
-        const tbody = document.getElementById('feesTableBody');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td><input type="text" class="fee-grade" placeholder="e.g. Grade 1"></td>
-            <td><input type="text" class="fee-admission" placeholder="e.g. 500"></td>
-            <td><input type="text" class="fee-tuition" placeholder="e.g. 5000"></td>
-            <td><button class="action-btn btn-delete" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button></td>
-        `;
-        tbody.appendChild(tr);
-    };
+    const addFeeRowBtn = document.getElementById('addFeeRowBtn');
+    if (addFeeRowBtn) {
+        addFeeRowBtn.addEventListener('click', () => {
+            const tbody = document.getElementById('feesTableBody');
+            if(!tbody) return;
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><input type="text" class="fee-grade" placeholder="e.g. Grade 1"></td>
+                <td><input type="text" class="fee-admission" placeholder="e.g. 500"></td>
+                <td><input type="text" class="fee-tuition" placeholder="e.g. 5000"></td>
+                <td><button class="action-btn btn-delete" onclick="this.parentElement.parentElement.remove()"><i class="fas fa-trash"></i></button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
 
     window.deleteFeeRow = async function(id) {
         if (confirm('Delete this fee entry?')) {
@@ -582,7 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const addPhotoBtn = document.getElementById('addPhotoBtn');
     if (addPhotoBtn) {
         addPhotoBtn.onclick = async () => {
-            const url = prompt('Enter image URL:');
+            const url = prompt('Enter image URL or local filename (e.g. event.jpg):');
             if (url) {
                 try {
                     await push(ref(db, 'gallery'), {

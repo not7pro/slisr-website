@@ -646,38 +646,76 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const addPhotoBtn = document.getElementById('addPhotoBtn');
-    const galleryFileInput = document.getElementById('galleryFileInput');
+    const oneDriveBtn = document.getElementById('oneDriveBtn');
+    
+    // --- MICROSOFT ONEDRIVE CONFIGURATION ---
+    // User needs to provide their own Client ID from Azure Portal
+    const ONEDRIVE_CLIENT_ID = "YOUR_MICROSOFT_CLIENT_ID_HERE"; 
 
-    if (addPhotoBtn) {
-        addPhotoBtn.onclick = () => {
-            // Open the file explorer dialog
-            if (galleryFileInput) {
-                galleryFileInput.click();
+    if (oneDriveBtn) {
+        oneDriveBtn.onclick = () => {
+            if (ONEDRIVE_CLIENT_ID === "YOUR_MICROSOFT_CLIENT_ID_HERE") {
+                const id = prompt("Please enter your Microsoft Azure Client ID to enable OneDrive connectivity:");
+                if (!id) return;
+                alert("Client ID accepted for this session. (You should permanently update it in admin.js later)");
+                launchOneDrivePicker(id);
             } else {
-                // Fallback: ask for URL
-                const url = prompt('Enter image URL:');
-                if (url) uploadPhotoUrl(url);
+                launchOneDrivePicker(ONEDRIVE_CLIENT_ID);
             }
         };
     }
 
-    if (galleryFileInput) {
-        galleryFileInput.addEventListener('change', async (e) => {
-            const files = Array.from(e.target.files);
-            if (!files.length) return;
-
-            for (const file of files) {
-                // Since we can't upload to Firebase Storage without extra setup,
-                // we store the file name as the URL so it works with local images
-                // in the same directory, or we create an object URL as a preview.
-                const localUrl = file.name; // store just filename — must be in website folder
-                await uploadPhotoUrl(localUrl, file.name);
+    function launchOneDrivePicker(clientId) {
+        const odOptions = {
+            clientId: clientId,
+            action: "share",
+            multiSelect: true,
+            advanced: {
+                redirectUri: window.location.href // Ensure this is registered in Azure
+            },
+            success: function(files) {
+                processOneDriveFiles(files);
+            },
+            cancel: function() { console.log("OneDrive picker cancelled"); },
+            error: function(e) { 
+                console.error("OneDrive Error:", e);
+                showToast("Microsoft Auth Error. Check your Client ID and Redirect URI.", "error");
             }
+        };
+        OneDrive.open(odOptions);
+    }
 
-            // Reset input so same files can be selected again
-            galleryFileInput.value = '';
-        });
+    async function processOneDriveFiles(response) {
+        const files = response.value;
+        let count = 0;
+        for (const file of files) {
+            // Convert OneDrive share URL to direct embed content URL
+            // This method works for "Anyone with the link" photos
+            const shareUrl = file.permissions[0].link.webUrl;
+            const directUrl = convertToDirectLink(shareUrl);
+            
+            await uploadPhotoUrl(directUrl, file.name || "OneDrive Photo");
+            count++;
+        }
+        showToast(`✅ Successfully linked ${count} photos from OneDrive!`);
+    }
+
+    function convertToDirectLink(webUrl) {
+        // OneDrive 'share' URLs can be converted to direct content URLs by base64 encoding them
+        // and using the api.onedrive.com/v1/shares/u!{b64}/root/content endpoint.
+        try {
+            const b64 = btoa(webUrl).replace(/=/g, '').replace(/\//g, '_').replace(/\+/g, '-');
+            return `https://api.onedrive.com/v1.0/shares/u!${b64}/root/content`;
+        } catch (e) {
+            return webUrl; // Fallback
+        }
+    }
+
+    if (addPhotoBtn) {
+        addPhotoBtn.onclick = () => {
+            const url = prompt('Enter image URL:');
+            if (url) uploadPhotoUrl(url);
+        };
     }
 
     async function uploadPhotoUrl(url, caption = '') {
@@ -690,7 +728,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await logActivity('Added a new photo to the gallery.');
         } catch (error) {
             console.error('Add photo error', error);
-            alert('Failed to add photo. Make sure Firebase is connected.');
+            showToast('Failed to add photo. Check database permissions.', 'error');
         }
     }
 

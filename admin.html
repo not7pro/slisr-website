@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
     <!-- Security Check Script -->
@@ -64,6 +65,16 @@
                 </a>
             </div>
         </aside>
+
+        <!-- Mobile Top Bar (visible only on mobile) -->
+        <div class="admin-topbar" id="adminTopbar">
+            <button class="admin-topbar-toggle" id="sidebarToggle" aria-label="Open Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="admin-topbar-title">SLISR Admin</span>
+        </div>
+        <!-- Sidebar overlay for mobile -->
+        <div id="sidebarOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1999;display:none;" onclick="closeSidebar()"></div>
 
         <!-- Main Content -->
         <main class="main-content">

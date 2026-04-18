@@ -49,6 +49,10 @@ body {
     min-height: 100vh;
 }
 
+.admin-topbar {
+    display: none; /* Hidden on desktop by default */
+}
+
 /* ——— SIDEBAR ——— */
 .sidebar {
     width: var(--sidebar-width);
@@ -550,6 +554,7 @@ body {
 }
 
 /* ——— MINI MESSAGE ITEMS ——— */
+
 .mini-msg-item {
     padding: 14px 0;
     border-bottom: 1px solid #f8fafc;

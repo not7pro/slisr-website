@@ -7,6 +7,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const sectionSubtitle = document.getElementById('sectionSubtitle');
     const logoutBtn = document.getElementById('logoutBtn');
 
+    // ── Mobile Sidebar Toggle ──────────────────────────────────
+    const sidebar = document.querySelector('.sidebar');
+    const adminTopbar = document.getElementById('adminTopbar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    function isMobile() { return window.innerWidth <= 768; }
+
+    function showTopbar() {
+        if (adminTopbar) adminTopbar.style.display = isMobile() ? 'flex' : 'none';
+    }
+
+    window.closeSidebar = function() {
+        sidebar?.classList.remove('mobile-open');
+        if (sidebarOverlay) sidebarOverlay.style.display = 'none';
+    };
+
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', () => {
+            sidebar?.classList.toggle('mobile-open');
+            if (sidebarOverlay) {
+                sidebarOverlay.style.display = sidebar?.classList.contains('mobile-open') ? 'block' : 'none';
+            }
+        });
+    }
+
+    // Close sidebar when a nav item is clicked on mobile
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (isMobile()) closeSidebar();
+        });
+    });
+
+    showTopbar();
+    window.addEventListener('resize', showTopbar);
+
     // Section Switching Logic
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
